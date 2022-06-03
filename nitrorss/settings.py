@@ -1,24 +1,26 @@
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dotenv import load_dotenv
+
+from nitrorss.utils.env import get_env_bool, get_env_list, get_env_str
+
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = get_env_str("DJANGO_SECRET_KEY", "secretkey")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+DEBUG = get_env_bool("DJANGO_DEBUG", False)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-n++=is1ufqvi^%15hy%sxg0m935y)0@j&=*9yw227kqb5o&z45"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS")
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "users",
+    "feeds",
+    "subscriptions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -63,8 +65,12 @@ WSGI_APPLICATION = "nitrorss.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": get_env_str("DB_HOST"),
+        "NAME": get_env_str("DB_NAME"),
+        "USER": get_env_str("DB_USER"),
+        "PASSWORD": get_env_str("DB_PASS"),
+        "PORT": get_env_str("DB_PORT", "5432"),
     }
 }
 
@@ -87,6 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
