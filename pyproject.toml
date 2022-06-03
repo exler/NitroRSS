@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "NitroRSS"
+version = "0.1.0"
+description = "Real-time RSS and Atom feeds delivered to your email"
+authors = ["Kamil Marut <kamil@kamilmarut.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-dotenv = "^0.20.0"
+Django = "^4.0.5"
+django-debug-toolbar = "^3.4.0"
+feedparser = "^6.0.10"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+flake8-annotations = "^2.9.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
