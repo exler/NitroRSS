@@ -1,4 +1,3 @@
-
 ### Python ###
 *.log
 *.pot
@@ -89,6 +88,9 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Staticfiles
+staticfiles/
 
 ### VisualStudioCode ###
 .vscode/*
