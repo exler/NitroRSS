@@ -16,7 +16,7 @@ class Subscription(TimestampedModel):
     feed = models.ForeignKey(Feed, on_delete=models.PROTECT, related_name="subscriptions")
     target_email = models.EmailField()
 
-    schedule = models.SmallIntegerField(choices=Schedules.choices)
+    schedule = models.SmallIntegerField(choices=Schedules.choices, default=Schedules.DAILY)
 
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions", null=True, blank=True

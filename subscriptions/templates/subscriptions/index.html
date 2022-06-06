@@ -1,7 +1,36 @@
 {% extends 'base.html' %}
+{% load static nitro_tags %}
 
-{% block title %}Hello{% endblock %}
+{% block title %}NitroRSS{% endblock %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/index_form.css' %}">
+{% endblock %}
 
 {% block content %}
-Nice
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form action="{% url 'subscriptions:index' %}" method="POST">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                </div>
+                {{ form.target_email.errors }}
+                {{ form.target_email|addclass:'form-control' }}
+            </div>
+            <div class="form-group mb-2">
+                {{ form.url.errors }}
+                {{ form.url.label_tag }}
+                {{ form.url|addclass:'form-control' }}
+            </div>
+            <div class="form-group mb-2">
+                {{ form.schedule.errors }}
+                {{ form.schedule.label_tag }}
+                {{ form.schedule|addclass:'form-control select-arrow' }}
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Subscribe</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

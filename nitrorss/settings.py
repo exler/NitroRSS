@@ -19,6 +19,7 @@ ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
+    "nitrorss",
     "users",
     "feeds",
     "subscriptions",
@@ -47,7 +48,7 @@ ROOT_URLCONF = "nitrorss.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "nitrorss" / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

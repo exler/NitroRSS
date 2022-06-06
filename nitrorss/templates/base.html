@@ -9,15 +9,22 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    {% block extra_styles %}{% endblock %}
 
     <script src="{% static 'js/htmx-1.7.0.min.js' %}" defer></script>
     <script src="{% static 'js/alpinejs-3.10.2.min.js' %}" defer></script>
 </head>
 <body>
-    {% include 'partials/header.html' %}
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    {% include 'partials/footer.html' %}
+    <div class="container">
+        {% include 'partials/header.html' %}
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        {% include 'partials/footer.html' %}
+    </div>
+    
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>
