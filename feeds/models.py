@@ -10,3 +10,6 @@ class Feed(TimestampedModel):
 
     last_check = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f"{self.title} ({self.url})"

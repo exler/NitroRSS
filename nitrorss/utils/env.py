@@ -8,6 +8,9 @@ def get_env_str(key: str, default: Optional[str] = None) -> Optional[str]:
 
 def get_env_int(key: str, default: Optional[int] = None) -> Optional[int]:
     value = os.environ.get(key, default)
+    if value is None:
+        return None
+
     try:
         return int(value)
     except TypeError:
