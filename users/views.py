@@ -5,12 +5,17 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseBase, HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.generic import CreateView, FormView, RedirectView, TemplateView
 
-from .forms import LoginForm, RegisterForm
+from .forms import (
+    EmailPreferencesForm,
+    LoginForm,
+    PersonalInformationForm,
+    RegisterForm,
+)
 
 
 class RegisterView(CreateView):
@@ -21,9 +26,7 @@ class RegisterView(CreateView):
 class LoginView(FormView):
     form_class = LoginForm
     template_name = "users/login.html"
-
-    def get_success_url(self) -> str:
-        return reverse("subscriptions:list-subscriptions")
+    success_url = reverse_lazy("subscriptions:list-subscriptions")
 
     def form_valid(self, form: LoginForm) -> HttpResponse:
         """Security check complete. Log the user in."""
@@ -43,3 +46,33 @@ class LogoutView(RedirectView):
 
 class AccountView(LoginRequiredMixin, TemplateView):
     template_name = "users/account.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["information_form"] = PersonalInformationForm(
+            prefix="information",
+            initial={
+                "name": self.request.user.name,
+                "email": self.request.user.email,
+            },
+        )
+        context["preferences_form"] = EmailPreferencesForm(prefix="preferences")
+        return context
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+        """
+        Handle request with multiple forms.
+        """
+        user = request.user
+
+        information_form = PersonalInformationForm(request.POST, instance=user, prefix="information")
+        preferences_form = EmailPreferencesForm(request.POST, prefix="preferences")
+
+        if information_form.is_valid():
+            information_form.save()
+
+        if preferences_form.is_valid():
+            pass
+            # preferences_form.save()
+
+        return self.get(request, *args, **kwargs)

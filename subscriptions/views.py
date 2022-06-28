@@ -2,7 +2,7 @@ from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 
 from .forms import AddSubscriptionForm, UpdateSubscriptionForm
@@ -19,9 +19,7 @@ class SubscriptionsView(LoginRequiredMixin, ListView):
 class AddSubscriptionView(LoginRequiredMixin, CreateView):
     form_class = AddSubscriptionForm
     template_name = "subscriptions/add_subscription.html"
-
-    def get_success_url(self) -> str:
-        return reverse("subscriptions:list-subscriptions")
+    success_url = reverse_lazy("subscriptions:list-subscriptions")
 
     def get_form_kwargs(self) -> dict[str, Any]:
         form_kwargs = super().get_form_kwargs()
@@ -32,9 +30,7 @@ class AddSubscriptionView(LoginRequiredMixin, CreateView):
 class ManageSubscriptionView(LoginRequiredMixin, UpdateView):
     form_class = UpdateSubscriptionForm
     template_name = "subscriptions/manage_subscription.html"
+    success_url = reverse_lazy("subscriptions:list-subscriptions")
 
     def get_queryset(self) -> QuerySet[Subscription]:
         return Subscription.objects.filter(created_by=self.request.user)
-
-    def get_success_url(self) -> str:
-        return reverse("subscriptions:list-subscriptions")

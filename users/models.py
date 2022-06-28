@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
 
     email = models.EmailField(_("email address"), unique=True)
-    name = models.CharField(max_length=255, blank=True)
+    name = models.CharField(_("full name"), max_length=255, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -61,3 +61,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    def __str__(self) -> str:
+        return f"{self.name} ({self.email})"

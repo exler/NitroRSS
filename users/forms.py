@@ -73,3 +73,15 @@ class RegisterForm(HideColonFormMixin, forms.ModelForm):
                 self.error_messages["password_mismatch"],
                 code="password_mismatch",
             )
+
+
+class PersonalInformationForm(HideColonFormMixin, forms.ModelForm):
+    email = forms.EmailField(label=_("Email address"), disabled=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ("name", "email")
+
+
+class EmailPreferencesForm(HideColonFormMixin, forms.Form):
+    pass
