@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 from nitrorss.utils.env import get_env_bool, get_env_list, get_env_str
@@ -77,17 +78,9 @@ COMPRESS_STORAGE = "compressor.storage.BrotliCompressorFileStorage"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+# https://github.com/jazzband/dj-database-url
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": get_env_str("DB_HOST"),
-        "NAME": get_env_str("DB_NAME"),
-        "USER": get_env_str("DB_USER"),
-        "PASSWORD": get_env_str("DB_PASS"),
-        "PORT": get_env_str("DB_PORT", "5432"),
-    }
-}
+DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
 
 # Password validation
