@@ -2,28 +2,29 @@
 
 from django.db import migrations, models
 
+from subscriptions.models import Subscription
+
 
 class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('target_email', models.EmailField(max_length=254)),
-                ('schedule', models.SmallIntegerField(choices=[(1, 'Realtime'), (2, 'Every 2 Hours'), (3, 'Every 4 Hours'), (4, 'Every 6 Hours'), (5, 'Every 12 Hours'), (6, 'Daily')])),
-                ('is_active', models.BooleanField(default=False)),
-                ('is_deleted', models.BooleanField(default=False)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("target_email", models.EmailField(max_length=254)),
+                ("schedule", models.SmallIntegerField(choices=Subscription.Schedules.choices)),
+                ("is_active", models.BooleanField(default=False)),
+                ("is_deleted", models.BooleanField(default=False)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]
