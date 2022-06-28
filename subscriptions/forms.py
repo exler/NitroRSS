@@ -40,15 +40,20 @@ class AddSubscriptionForm(HideColonFormMixin, forms.ModelForm):
 
 
 class UpdateSubscriptionForm(HideColonFormMixin, forms.ModelForm):
-    feed_url = forms.URLField()
-    feed_title = forms.CharField()
-    feed_description = forms.CharField(widget=forms.Textarea())
-    feed_last_update = forms.DateField()
-    subscription_added = forms.DateField()
+    feed_url = forms.URLField(disabled=True, required=False)
+    feed_title = forms.CharField(disabled=True, required=False)
+    feed_description = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), disabled=True, required=False)
+    feed_last_update = forms.DateField(disabled=True, required=False)
+    subscription_added = forms.DateField(disabled=True)
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.fields["subscription_added"].initial = self.instance.created_at
+        if self.instance:
+            self.fields["feed_url"].initial = self.instance.feed.url
+            self.fields["feed_title"].initial = self.instance.feed.title
+            self.fields["feed_description"].initial = self.instance.feed.description
+            self.fields["feed_last_update"].initial = self.instance.feed.last_update
+            self.fields["subscription_added"].initial = self.instance.created_at
 
     class Meta:
         model = Subscription

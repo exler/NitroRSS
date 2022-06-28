@@ -31,3 +31,10 @@ class AddSubscriptionView(LoginRequiredMixin, CreateView):
 
 class ManageSubscriptionView(LoginRequiredMixin, UpdateView):
     form_class = UpdateSubscriptionForm
+    template_name = "subscriptions/manage_subscription.html"
+
+    def get_queryset(self) -> QuerySet[Subscription]:
+        return Subscription.objects.filter(created_by=self.request.user)
+
+    def get_success_url(self) -> str:
+        return reverse("subscriptions:list-subscriptions")

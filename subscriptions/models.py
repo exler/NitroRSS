@@ -23,5 +23,5 @@ class Subscription(TimestampedModel):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions", null=True, blank=True
     )
 
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
