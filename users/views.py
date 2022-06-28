@@ -23,7 +23,7 @@ class LoginView(FormView):
     template_name = "users/login.html"
 
     def get_success_url(self) -> str:
-        return reverse("subscriptions:subscriptions")
+        return reverse("subscriptions:list-subscriptions")
 
     def form_valid(self, form: LoginForm) -> HttpResponse:
         """Security check complete. Log the user in."""

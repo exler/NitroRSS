@@ -1,12 +1,15 @@
-from typing import Any
+from typing import Any, Optional
 
 from django import forms
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from feeds.models import Feed
 from nitrorss.base.mixins import HideColonFormMixin
 
 from .models import Subscription
+
+User = get_user_model()
 
 
 class AddSubscriptionForm(HideColonFormMixin, forms.ModelForm):
@@ -17,6 +20,13 @@ class AddSubscriptionForm(HideColonFormMixin, forms.ModelForm):
         fields = ("url", "target_email", "schedule")
         widgets = {"target_email": forms.TextInput(attrs={"placeholder": _("Email address")})}
 
+    def __init__(self, user: Optional[User] = None, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+        self.user = user
+        if self.user:
+            self.fields["target_email"].required = False
+
     def clean_url(self) -> str:
         return self.cleaned_data["url"].lower()
 
@@ -25,6 +35,7 @@ class AddSubscriptionForm(HideColonFormMixin, forms.ModelForm):
             url=self.cleaned_data["url"],
             defaults={"title": "Test"},
         )[0]
+        self.instance.created_by = self.user
         return super().save(*args, **kwargs)
 
 

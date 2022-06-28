@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+
 from feeds.models import Feed
 from nitrorss.common.models import TimestampedModel
 
