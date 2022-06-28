@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
+
 from nitrorss.base.mixins import HideColonFormMixin
 
 from .models import User
@@ -13,14 +14,14 @@ from .models import User
 class LoginForm(HideColonFormMixin, forms.ModelForm):
     error_messages = {
         "invalid_credentials": _(
-            "Please enter a correct username and password. Note that both fields may be case-sensitive."
+            "Please enter a correct email and password. Note that both fields may be case-sensitive."
         ),
         "user_inactive": _("This account is inactive."),
     }
 
     class Meta:
         model = User
-        fields = ("username", "password")
+        fields = ("email", "password")
         widgets = {"password": forms.PasswordInput()}
 
     def __init__(self, request: Optional[HttpRequest] = None, *args: Any, **kwargs: Any) -> None:
@@ -30,11 +31,11 @@ class LoginForm(HideColonFormMixin, forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     def clean(self) -> dict[str, Any]:
-        username = self.cleaned_data.get("username")
+        email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
 
-        if username is not None and password:
-            self.user_cache = authenticate(self.request, username=username, password=password)
+        if email is not None and password:
+            self.user_cache = authenticate(self.request, username=email, password=password)
             if self.user_cache is None:
                 raise self.get_invalid_credentials_error()
             else:
@@ -61,7 +62,7 @@ class RegisterForm(HideColonFormMixin, forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username", "password", "confirm_password")
+        fields = ("email", "password", "confirm_password")
         widgets = {"password": forms.PasswordInput()}
 
     def clean_confirm_password(self) -> None:
