@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import UniqueConstraint
 
 from feeds.models import Feed
 from nitrorss.common.models import TimestampedModel
@@ -25,3 +26,8 @@ class Subscription(TimestampedModel):
 
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=["feed", "target_email"], name="unique_subscription_email"),
+        ]

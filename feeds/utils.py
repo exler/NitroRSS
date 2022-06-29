@@ -15,6 +15,19 @@ class PossibleFeed:
 
 
 def find_feeds(url: str) -> frozenset[PossibleFeed]:
+    """
+    Function that finds possible RSS and Atom feeds from a given URL.
+
+    TODO POSSIBLE IMPROVEMENTS:
+    - Parse the feed using feedparser, obtain the description and other details.
+    - Add the feed to the database and link it with the supplied URL to speed up future requests.
+
+    Args:
+        url (str): URL to search feeds at.
+
+    Returns:
+        frozenset[PossibleFeed]: Set of possible feeds.
+    """
     response = requests.get(url)
     html = bs4(response.text, "lxml")
 

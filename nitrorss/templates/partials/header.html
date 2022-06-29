@@ -9,9 +9,10 @@
       <img class="m-auto" alt="NitroRSS" src="{% static 'img/nitrorss-logo.png' %}" width="128">
     </a>
 
-    <div class="col-md-2 text-end">
+    <div class="col-md-2 d-flex align-items-center justify-content-end">
     {% if user.is_authenticated %}
-      <div class="dropdown text-end" x-data="{ open: false }" x-on:click.outside="open = false">
+      <a href="{% url 'subscriptions:list-subscriptions' %}" class="btn btn-secondary" style="margin-right: 1rem;">Dashboard</a>
+      <div class="dropdown" x-data="{ open: false }" x-on:click.outside="open = false">
         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle show" x-on:click="open = !open">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>

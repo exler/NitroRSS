@@ -9,7 +9,7 @@
 {% block content %}
 <div class="row">
     <h5>Personal information</h5>
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-6 offset-md-3 mb-4">
         <form action="{% url 'users:account' %}" method="POST">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -28,7 +28,7 @@
     </div>
     <hr>
     <h5>Email preferences</h5>
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-6 offset-md-3 mb-4">
         <form action="{% url 'users:account' %}" method="POST">
             {% csrf_token %}
             {{ preferences_form.non_field_errors }}
