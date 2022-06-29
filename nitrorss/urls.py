@@ -6,6 +6,7 @@ from django.urls import include, path
 from .views import IndexView
 
 urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
     path("admin/", admin.site.urls),
     path("", include("users.urls")),
     path("", IndexView.as_view(), name="index"),

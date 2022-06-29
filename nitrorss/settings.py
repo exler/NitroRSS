@@ -15,11 +15,14 @@ DEBUG = get_env_bool("DJANGO_DEBUG", False)
 
 ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS")
 
+INTERNAL_IPS = get_env_list("DJANGO_INTERNAL_IPS", ["127.0.0.1"])
+
 
 # Application definition
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
+    "debug_toolbar",
     "nitrorss",
     "users",
     "feeds",
@@ -36,6 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
