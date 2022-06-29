@@ -1,42 +1,56 @@
-from dataclasses import dataclass
 from typing import Optional
 
-import requests
-from bs4 import BeautifulSoup as bs4
+import feedparser
+
+from .models import Feed, FeedConnection
 
 
-@dataclass
-class PossibleFeed:
-    title: Optional[str]
-    url: str
-
-    def __hash__(self) -> int:
-        return hash((self.url, self.title))
-
-
-def find_feeds(url: str) -> frozenset[PossibleFeed]:
+def find_feeds(url: str) -> list[Feed]:
     """
-    Function that finds possible RSS and Atom feeds from a given URL.
-
-    TODO POSSIBLE IMPROVEMENTS:
-    - Parse the feed using feedparser, obtain the description and other details.
-    - Add the feed to the database and link it with the supplied URL to speed up future requests.
+    Function that finds RSS and Atom feeds from a given URL.
 
     Args:
         url (str): URL to search feeds at.
 
     Returns:
-        frozenset[PossibleFeed]: Set of possible feeds.
+        list[Feed]: List of found feeds.
     """
-    response = requests.get(url)
-    html = bs4(response.text, "lxml")
+    try:
+        feed = Feed.objects.get(url=url)
+        return [feed]
+    except Feed.DoesNotExist:
+        data = feedparser.parse(url)
+        if data.feed.get("title", None):
+            return [
+                Feed.objects.create(
+                    url=url,
+                    title=data.feed.get("title", None),
+                    description=data.feed.get("description", None),
+                )
+            ]
 
-    possible_feeds: list[PossibleFeed] = []
+    connections = FeedConnection.objects.filter(url=url)
+    if connections.exists():
+        ids = connections.values_list("feed_id", flat=True)
+        return list(Feed.objects.filter(id__in=ids))
 
-    feed_urls = html.find_all("link", rel="alternate")
-    for feed in feed_urls:
-        if (t := feed.get("type", None)) and t.endswith("rss+xml"):
-            if href := feed.get("href", None):
-                possible_feeds.append(PossibleFeed(url=href, title=feed.get("title", None)))
+    feeds: list[Feed] = []
+    feed_links = data.feed.get("links", [])
+    for feed_link in feed_links:
+        feed_type = feed_link.get("type", None)
+        feed_href = feed_link.get("href", None)
+        feed_obj: Optional[Feed] = None
+        try:
+            feed_obj = Feed.objects.get(url=feed_href)
+        except Feed.DoesNotExist:
+            if feed_type.endswith("rss+xml") and feed_href:
+                new_feed_data = feedparser.parse(feed_href)
+                new_feed_title = new_feed_data.feed.get("title", None)
+                new_feed_description = new_feed_data.feed.get("description", None)
+                feed_obj = Feed.objects.create(url=feed_href, title=new_feed_title, description=new_feed_description)
 
-    return frozenset(possible_feeds)
+        if feed_obj:
+            feeds.append(feed_obj)
+            FeedConnection.objects.create(url=url, feed=feed_obj)
+
+    return feeds

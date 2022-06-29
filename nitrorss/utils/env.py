@@ -18,7 +18,11 @@ def get_env_int(key: str, default: Optional[int] = None) -> Optional[int]:
 
 
 def get_env_list(key: str, default: list[str] = []) -> list[str]:
-    return os.environ.get(key, "").split(",")
+    value = os.environ.get(key, None)
+    if value is None:
+        return default
+
+    return value.split(",")
 
 
 def get_env_bool(key: str, default: bool = False) -> bool:

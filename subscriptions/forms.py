@@ -31,11 +31,10 @@ class AddSubscriptionForm(HideColonFormMixin, forms.ModelForm):
         return self.cleaned_data["url"].lower()
 
     def save(self, *args: Any, **kwargs: Any) -> Subscription:
-        self.instance.feed = Feed.objects.get_or_create(
-            url=self.cleaned_data["url"],
-            defaults={"title": "Test"},
-        )[0]
-        self.instance.created_by = self.user
+        self.instance.feed = Feed.objects.get(url=self.cleaned_data["url"])
+        if self.user:
+            self.instance.created_by = self.user
+            self.instance.target_email = self.user.email
         return super().save(*args, **kwargs)
 
 

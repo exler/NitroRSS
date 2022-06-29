@@ -44,7 +44,7 @@ class AddSubscriptionView(LoginRequiredMixin, CreateView):
         if form.is_valid():
             url = form.cleaned_data["url"]
             try:
-                feed = Feed.objects.get(url=url)
+                Feed.objects.get(url=url)
                 self.form_valid(form)
                 # Make new response that will trigger HTMX to redirect
                 response = HttpResponse()
@@ -52,11 +52,7 @@ class AddSubscriptionView(LoginRequiredMixin, CreateView):
                 return response
             except Feed.DoesNotExist:
                 feeds = find_feeds(url)
-                feed_objs = []
-                for feed in feeds:
-                    feed_objs.append(Feed(url=feed.url, title=feed.title))
-                Feed.objects.bulk_create(feed_objs, ignore_conflicts=True)
-                return self.render_to_response(self.get_context_data(feeds=feed_objs))
+                return self.render_to_response(self.get_context_data(feeds=feeds))
             except IntegrityError:
                 form.add_error("url", "This feed is already subscribed.")
                 return self.form_invalid(form)

@@ -5,4 +5,4 @@ from .models import Subscription
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("feed", "target_email", "schedule")
