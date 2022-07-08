@@ -23,6 +23,7 @@ INTERNAL_IPS = get_env_list("DJANGO_INTERNAL_IPS", ["127.0.0.1"])
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "debug_toolbar",
+    "django_celery_beat",
     "nitrorss",
     "users",
     "feeds",
@@ -85,6 +86,21 @@ COMPRESS_STORAGE = "compressor.storage.BrotliCompressorFileStorage"
 # https://github.com/jazzband/dj-database-url
 
 DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+
+# Redis
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": get_env_str("REDIS_CACHE_URL", "redis://localhost:6379/1"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+        },
+    }
+}
+
+CELERY_BROKER_URL = get_env_str("CELERY_BROKER_URL", "redis://localhost:6379/0")
 
 
 # Password validation
