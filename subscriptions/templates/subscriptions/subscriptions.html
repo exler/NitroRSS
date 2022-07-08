@@ -29,8 +29,11 @@
             <td>{{ subscription.get_schedule_display }}</td>
             <td>
                 <a href="{% url 'subscriptions:manage-subscription' subscription.pk %}">Edit</a>
+                <a href="{% url 'subscriptions:delete-subscription' subscription.pk %}">Delete</a>
             </td>
         </tr>
+        {% empty %}
+        <td colspan="100%">No subscriptions yet</td>
         {% endfor %}
     </tbody>
 </table>

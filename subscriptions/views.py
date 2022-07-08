@@ -6,7 +6,7 @@ from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseBase
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from feeds.models import Feed
 from feeds.utils import find_feeds
@@ -67,3 +67,9 @@ class ManageSubscriptionView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self) -> QuerySet[Subscription]:
         return Subscription.objects.filter(created_by=self.request.user)
+
+
+class DeleteSubscriptionView(LoginRequiredMixin, DeleteView):
+    model = Subscription
+    template_name = "subscriptions/confirm_delete.html"
+    success_url = reverse_lazy("subscriptions:list-subscriptions")

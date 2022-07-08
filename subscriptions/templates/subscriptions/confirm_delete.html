@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscriptions{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form method="POST">
+            {% csrf_token %}
+            <p>Are you sure you want to delete subscription to "{{ object.feed.title }}"?</p>
+            <input class="btn btn-primary" type="submit" value="Confirm">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
