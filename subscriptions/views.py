@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from feeds.models import Feed
-from feeds.utils import find_feeds
+from feeds.rss import find_feeds
 
 from .forms import AddSubscriptionForm, UpdateSubscriptionForm
 from .models import Subscription

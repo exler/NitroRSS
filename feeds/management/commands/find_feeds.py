@@ -3,7 +3,7 @@ from typing import Any
 
 from django.core.management.base import BaseCommand
 
-from feeds.utils import find_feeds
+from feeds.rss import find_feeds
 
 
 class Command(BaseCommand):

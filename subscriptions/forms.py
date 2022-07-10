@@ -51,7 +51,9 @@ class UpdateSubscriptionForm(HideColonFormMixin, forms.ModelForm):
             self.fields["feed_url"].initial = self.instance.feed.url
             self.fields["feed_title"].initial = self.instance.feed.title
             self.fields["feed_description"].initial = self.instance.feed.description
-            self.fields["feed_last_update"].initial = self.instance.feed.last_update
+            self.fields["feed_last_update"].initial = (
+                self.instance.feed.latest_entry.date_published if self.instance.feed.latest_entry else None
+            )
             self.fields["subscription_added"].initial = self.instance.created_at
 
     class Meta:

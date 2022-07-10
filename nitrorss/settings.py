@@ -3,6 +3,7 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
+from nitrorss.schedules import BEAT_SCHEDULES
 from nitrorss.utils.env import get_env_bool, get_env_list, get_env_str
 
 load_dotenv()
@@ -87,7 +88,7 @@ COMPRESS_STORAGE = "compressor.storage.BrotliCompressorFileStorage"
 
 DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
-# Redis
+# Caches
 
 CACHES = {
     "default": {
@@ -100,8 +101,10 @@ CACHES = {
     }
 }
 
-CELERY_BROKER_URL = get_env_str("CELERY_BROKER_URL", "redis://localhost:6379/0")
+# Celery
 
+CELERY_BROKER_URL = get_env_str("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_BEAT_SCHEDULE = BEAT_SCHEDULES
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

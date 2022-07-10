@@ -15,7 +15,7 @@
       <tr>
         <th scope="col">Feed</th>
         <th scope="col">Added</th>
-        <th scope="col">Last Updated</th>
+        <th scope="col">Last update</th>
         <th scope="col">Schedule</th>
         <th scope="col">Action</th>
       </tr>
@@ -25,8 +25,8 @@
         <tr>
             <td>{{ subscription.feed.title }}</td>
             <td>{{ subscription.created_at }}</td>
-            <td>{{ subscription.feed.last_update|default_if_none:"Never" }}</td>
-            <td>{{ subscription.get_schedule_display }}</td>
+            <td>{% if subscription.feed.latest_entry %}{{ subscription.feed.latest_entry.date_published }}{% else %}Never{% endif %}</td>
+            <td>{{ subscription.schedule }}</td>
             <td>
                 <a href="{% url 'subscriptions:manage-subscription' subscription.pk %}">Edit</a>
                 <a href="{% url 'subscriptions:delete-subscription' subscription.pk %}">Delete</a>
