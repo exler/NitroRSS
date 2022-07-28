@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "django_celery_beat",
     "nitrorss",
+    "mailer",
     "users",
     "feeds",
     "subscriptions",
@@ -125,6 +126,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
+
+# Emails
+
+EMAIL_BACKEND = "mailer.backend.DatabaseBackend"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

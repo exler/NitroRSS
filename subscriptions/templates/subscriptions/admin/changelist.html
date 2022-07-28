@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load admin_list %}
+
+{% block object-tools %}
+<ul class="object-tools">
+    {% block object-tools-items %}
+    <li><a style="background: #0a086c" href="{% url 'admin:notify_subscriptions' %}">Notify subscriptions</a></li>
+    {% change_list_object_tools %}
+    {% endblock %}
+</ul>
+{% endblock %}
