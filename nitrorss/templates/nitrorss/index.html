@@ -8,8 +8,8 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-6 offset-md-3">
-        <form action="{% url 'index' %}" method="POST">
+    <div class="col-md-6 offset-md-3" x-data="{ open: false }">
+        <form id="index-add-form" hx-post="/" hx-target="body">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <div class="input-group mb-2">
@@ -31,6 +31,23 @@
             </div>
             <button type="submit" class="btn btn-primary mt-2">Subscribe</button>
         </form>
+        {% if feeds %}
+        <hr>
+        <div class="mt-4">
+            <h4>Feeds</h4>
+            <ul>
+                {% for feed in feeds %}
+                <li>
+                    Title: {{ feed.title }}, url: {{ feed.url }}, subscribe:
+                    <form hx-post="/" hx-target="body" hx-include="#index-add-form">
+                        <input type="hidden" name="url" value="{{ feed.url }}">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
