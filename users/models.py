@@ -28,6 +28,7 @@ class CustomUserManager(UserManager):
     def create_superuser(self, email: str, password: str, **extra_fields: Any) -> Any:
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("email_verified", True)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
@@ -48,6 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_("email address"), unique=True)
     name = models.CharField(_("full name"), max_length=255, blank=True)
+
+    email_verified = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

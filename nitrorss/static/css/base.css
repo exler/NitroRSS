@@ -8,3 +8,7 @@ body {
     margin: 0px;
     transform: translate(0px, 34px);
 }
+
+.messages {
+    list-style: none;
+}

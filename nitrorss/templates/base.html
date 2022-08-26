@@ -20,6 +20,16 @@
     <div class="container">
         {% include 'partials/header.html' %}
 
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         <main>
             {% block content %}{% endblock %}
         </main>
