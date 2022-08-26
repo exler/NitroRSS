@@ -1,5 +1,6 @@
 from celery import shared_task
 from django.db.models import Q
+from django.template.loader import render_to_string
 from django.utils import timezone
 
 from feeds.models import FeedEntry
@@ -35,13 +36,10 @@ def notify_subscriptions() -> None:
                 entries_for_sub = values.filter(feed__subscriptions=sub["feed__subscriptions"]).values(
                     "link", "title", "description"
                 )
-                message = ""
-                for entry in entries_for_sub:
-                    message += f"Link: {entry['link']}, Title: {entry['title']}, Description: {entry['description']}\n"
-
+                html_message = render_to_string("subscriptions/email/digest.html", {"entries": entries_for_sub})
                 db_msg = Message.make(
                     subject="Your subscription has new entries!",
-                    body=message,
+                    body=html_message,
                     recipients=[sub["feed__subscriptions__target_email"]],
                 )
                 db_messages.append(db_msg)
