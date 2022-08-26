@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import dj_database_url
+from django.contrib.messages import constants as message_constants
 from dotenv import load_dotenv
 
 from nitrorss.schedules import BEAT_SCHEDULES
@@ -18,6 +19,7 @@ ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS")
 
 INTERNAL_IPS = get_env_list("DJANGO_INTERNAL_IPS", ["127.0.0.1"])
 
+BASE_URL = get_env_str("BASE_URL")
 
 # Application definition
 
@@ -125,7 +127,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Authentication
+
 AUTH_USER_MODEL = "users.User"
+AUTHENTICATION_BACKENDS = ["users.backends.EmailVerificationRequiredBackend"]
 
 # Emails
 
@@ -142,6 +147,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Messages
+
+MESSAGE_TAGS = {
+    message_constants.SUCCESS: "success",
+    message_constants.ERROR: "danger",
+    message_constants.WARNING: "warning",
+    message_constants.INFO: "info",
+    message_constants.DEBUG: "secondary",
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
