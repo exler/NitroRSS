@@ -36,10 +36,12 @@ def notify_subscriptions() -> None:
                 entries_for_sub = values.filter(feed__subscriptions=sub["feed__subscriptions"]).values(
                     "link", "title", "description"
                 )
+                text_message = render_to_string("subscriptions/email/digest.txt", {"entries": entries_for_sub})
                 html_message = render_to_string("subscriptions/email/digest.html", {"entries": entries_for_sub})
                 db_msg = Message.make(
                     subject="Your subscription has new entries!",
-                    body=html_message,
+                    text_content=text_message,
+                    html_content=html_message,
                     recipients=[sub["feed__subscriptions__target_email"]],
                 )
                 db_messages.append(db_msg)

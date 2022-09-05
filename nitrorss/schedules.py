@@ -13,4 +13,12 @@ BEAT_SCHEDULES = {
         "task": "subscriptions.tasks.notify_subscriptions",
         "schedule": crontab(minute="*/5"),
     },
+    "send-mail": {
+        "task": "mailer.tasks.send_mail",
+        "schedule": crontab(minute="*/2"),
+    },
+    "retry-deferred": {
+        "task": "mailer.tasks.retry_deferred",
+        "schedule": crontab(minute="*/30"),
+    },
 }

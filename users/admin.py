@@ -14,6 +14,7 @@ class UserAdmin(admin.ModelAdmin):
             "Permissions",
             {
                 "fields": (
+                    "email_verified",
                     "is_active",
                     "is_staff",
                     "is_superuser",
@@ -28,6 +29,6 @@ class UserAdmin(admin.ModelAdmin):
         ),
     )
     readonly_fields = ("date_joined",)
-    list_display = ("email", "name", "is_active", "is_staff", "is_superuser")
+    list_display = ("email", "name", "is_active", "is_staff", "is_superuser", "email_verified")
     search_fields = ("name", "email")
     ordering = ["email"]

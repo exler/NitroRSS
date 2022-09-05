@@ -5,7 +5,7 @@ from django.contrib.messages import constants as message_constants
 from dotenv import load_dotenv
 
 from nitrorss.schedules import BEAT_SCHEDULES
-from nitrorss.utils.env import get_env_bool, get_env_list, get_env_str
+from nitrorss.utils.env import get_env_bool, get_env_int, get_env_list, get_env_str
 
 load_dotenv()
 
@@ -135,6 +135,12 @@ AUTHENTICATION_BACKENDS = ["users.backends.EmailVerificationRequiredBackend"]
 # Emails
 
 EMAIL_BACKEND = "mailer.backend.DatabaseBackend"
+EMAIL_HOST = get_env_str("EMAIL_HOST")
+EMAIL_PORT = get_env_int("EMAIL_PORT")
+EMAIL_HOST_USER = get_env_str("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_env_str("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = get_env_bool("EMAIL_USE_TLS", True)
+EMAIL_TIMEOUT = get_env_int("EMAIL_TIMEOUT", 10)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

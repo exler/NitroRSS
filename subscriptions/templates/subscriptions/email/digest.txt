@@ -1,0 +1,8 @@
+New entries in your subscriptions:
+
+{% for entry in entries %}
+Feed: {{ entry.feed.title }}
+Post title: {{ entry.title }}
+Post date: {{ entry.date_published }}
+Link: {{ entry.link }}
+{% endfor %}

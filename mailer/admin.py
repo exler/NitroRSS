@@ -3,19 +3,13 @@ from django.contrib import admin
 from mailer.models import Message, MessageLog
 
 
-class EmailBodyMixin:
-    def body(self, obj: Message | MessageLog) -> str:
-        email = obj.email
-        return email.body
-
-
 @admin.register(Message)
-class MessageAdmin(EmailBodyMixin, admin.ModelAdmin):
-    exclude = ["_message_data"]
-    readonly_fields = ["body"]
+class MessageAdmin(admin.ModelAdmin):
+    exclude = ["message_data"]
+    readonly_fields = ["subject", "recipients"]
 
 
 @admin.register(MessageLog)
-class MessageLogAdmin(EmailBodyMixin, admin.ModelAdmin):
-    exclude = ["_message_data"]
-    readonly_fields = ["body"]
+class MessageLogAdmin(admin.ModelAdmin):
+    exclude = ["message_data"]
+    readonly_fields = ["subject", "recipients"]
