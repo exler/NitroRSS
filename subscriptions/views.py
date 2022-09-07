@@ -1,15 +1,24 @@
 from typing import Any, Optional
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseBase
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    ListView,
+    RedirectView,
+    UpdateView,
+)
 
 from feeds.models import Feed
 from feeds.rss import find_feeds
+from subscriptions.tokens import ConfirmSubscriptionTokenGenerator
 
 from .forms import AddSubscriptionForm, UpdateSubscriptionForm
 from .models import Subscription
@@ -73,3 +82,26 @@ class DeleteSubscriptionView(LoginRequiredMixin, DeleteView):
     model = Subscription
     template_name = "subscriptions/confirm_delete.html"
     success_url = reverse_lazy("subscriptions:list-subscriptions")
+
+
+class ConfirmSubscriptionView(RedirectView):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> str:
+        if self.request.user.is_authenticated:
+            return reverse("subscriptions:list-subscriptions")
+        else:
+            return reverse("index")
+
+    def get(self, request: HttpRequest, token: str, *args: Any, **kwargs: Any) -> HttpResponseBase:
+        subscription = ConfirmSubscriptionTokenGenerator.check_token(token)
+
+        if subscription:
+            if subscription.confirmed:
+                messages.add_message(request, messages.WARNING, "Your subscription is already verified.")
+            else:
+                subscription.confirmed = True
+                subscription.save(update_fields=["confirmed"])
+                messages.add_message(request, messages.SUCCESS, "Your subscription has been confirmed.")
+
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied("Invalid token")

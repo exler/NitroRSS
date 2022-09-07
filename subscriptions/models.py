@@ -50,6 +50,8 @@ class Subscription(TimestampedModel):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
 
+    confirmed = models.BooleanField(default=False)
+
     objects = SubscriptionQuerySet.as_manager()
 
     class Meta:

@@ -91,7 +91,7 @@ class ResetPasswordForm(HideColonFormMixin, forms.Form):
     )
 
     def send_password_reset_email(self, user: User) -> None:
-        password_reset_token = PasswordResetTokenGenerator.make_token(user=user)
+        password_reset_token = PasswordResetTokenGenerator.make_token(obj=user)
         reset_url = get_full_url(reverse("users:reset-password-confirm", kwargs={"token": password_reset_token}))
 
         db_msg = Message.make(

@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     AddSubscriptionView,
+    ConfirmSubscriptionView,
     DeleteSubscriptionView,
     ManageSubscriptionView,
     SubscriptionsView,
@@ -13,4 +14,5 @@ urlpatterns = [
     path("add/", AddSubscriptionView.as_view(), name="add-subscription"),
     path("<int:pk>/", ManageSubscriptionView.as_view(), name="manage-subscription"),
     path("<int:pk>/delete/", DeleteSubscriptionView.as_view(), name="delete-subscription"),
+    path("confirm/<str:token>/", ConfirmSubscriptionView.as_view(), name="confirm-subscription"),
 ]

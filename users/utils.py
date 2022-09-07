@@ -8,7 +8,7 @@ from .tokens import EmailVerificationTokenGenerator
 
 
 def send_verification_email(user: User) -> None:
-    email_verification_token = EmailVerificationTokenGenerator.make_token(user=user)
+    email_verification_token = EmailVerificationTokenGenerator.make_token(obj=user)
     verification_url = get_full_url(reverse("users:verify-email", kwargs={"token": email_verification_token}))
 
     db_msg = Message.make(
