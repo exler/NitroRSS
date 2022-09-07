@@ -98,9 +98,9 @@ class Message(MessageDataPropertiesMixin, TimestampedModel):
     def make(
         cls,
         subject: str,
-        text_content: str,
-        html_content: Optional[str],
         recipients: list[str],
+        text_content: str,
+        html_content: Optional[str] = None,
         from_email: Optional[str] = None,
         attachments: list[str] = [],
         priority: Optional[int] = None,

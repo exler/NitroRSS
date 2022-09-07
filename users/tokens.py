@@ -19,17 +19,19 @@ class TokenGenerator(ABC):
         pass
 
 
-class EmailVerificationTokenGenerator(TokenGenerator):
+class JSONWebTokenGenerator(TokenGenerator):
     JWT_SECRET_KEY = settings.SECRET_KEY
-    DEFAULT_TOKEN_EXPIRATION = 259_200  # 3 days
+
+    user_kwargs = ["email"]
+    token_expiration = 60 * 60 * 24  # 1 day
 
     @classmethod
     def make_token(cls, user: User, expiry: Optional[int] = None) -> str:
         if expiry is None:
             # Must be UTC time!
-            expiry = datetime.now(tz=timezone.utc).timestamp() + cls.DEFAULT_TOKEN_EXPIRATION
+            expiry = datetime.now(tz=timezone.utc).timestamp() + cls.token_expiration
 
-        payload = {"email": user.email, "exp": expiry}
+        payload = {"exp": expiry, **{k: getattr(user, k) for k in cls.user_kwargs}}
         jwt_token = jwt.encode(payload, cls.JWT_SECRET_KEY, algorithm="HS256")
         return base64.urlsafe_b64encode(jwt_token.encode("utf-8")).decode("utf-8")
 
@@ -38,8 +40,19 @@ class EmailVerificationTokenGenerator(TokenGenerator):
         try:
             jwt_token = base64.urlsafe_b64decode(token.encode("utf-8")).decode("utf-8")
             payload = jwt.decode(jwt_token, cls.JWT_SECRET_KEY, algorithms=["HS256"])
-            email = payload["email"]
 
-            return User.objects.get(email=email)
+            return User.objects.get(**{k: payload[k] for k in cls.user_kwargs})
         except (KeyError, User.DoesNotExist, jwt.ExpiredSignatureError):
             return None
+
+
+class EmailVerificationTokenGenerator(JSONWebTokenGenerator):
+    JWT_SECRET_KEY = settings.SECRET_KEY
+
+    token_expiration = 60 * 60 * 24 * 3  # 3 days
+
+
+class PasswordResetTokenGenerator(JSONWebTokenGenerator):
+    JWT_SECRET_KEY = settings.SECRET_KEY
+
+    token_expiration = 60 * 60 * 6  # 6 hours

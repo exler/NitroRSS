@@ -19,6 +19,8 @@ from .forms import (
     LoginForm,
     PersonalInformationForm,
     RegisterForm,
+    ResetPasswordConfirmForm,
+    ResetPasswordForm,
 )
 
 
@@ -44,6 +46,41 @@ class VerifyEmailView(RedirectView):
             return super().get(request, *args, **kwargs)
         else:
             raise PermissionDenied("Invalid token")
+
+
+class ResetPasswordView(FormView):
+    template_name = "users/reset_password.html"
+    form_class = ResetPasswordForm
+    success_url = reverse_lazy("users:reset-password-requested")
+
+    def form_valid(self, form: ResetPasswordForm) -> HttpResponse:
+        form.save()
+        return super().form_valid(form)
+
+
+class ResetPasswordRequestedView(TemplateView):
+    template_name = "users/reset_password_requested.html"
+
+
+class ResetPasswordConfirmView(FormView):
+    template_name = "users/reset_password_confirm.html"
+    form_class = ResetPasswordConfirmForm
+    success_url = reverse_lazy("users:login")
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs["user"] = self.request.user
+        return form_kwargs
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["token"] = self.kwargs["token"]
+        return context
+
+    def form_valid(self, form: ResetPasswordConfirmForm) -> HttpResponse:
+        form.save()
+        messages.add_message(self.request, messages.SUCCESS, "Your password has been reset. You can now sign in.")
+        return super().form_valid(form)
 
 
 class LoginView(FormView):

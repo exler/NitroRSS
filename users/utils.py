@@ -12,9 +12,9 @@ def send_verification_email(user: User) -> None:
     verification_url = get_full_url(reverse("users:verify-email", kwargs={"token": email_verification_token}))
 
     db_msg = Message.make(
-        "Verify your email",
-        f"Click here to verify your email: {verification_url}",
-        [user.email],
+        subject="Verify your email",
+        text_content=f"Click here to verify your email: {verification_url}",
+        recipients=[user.email],
         priority=Message.Priorities.HIGH,
     )
     db_msg.save()
