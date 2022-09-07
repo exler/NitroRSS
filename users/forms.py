@@ -137,6 +137,7 @@ class ResetPasswordConfirmForm(HideColonFormMixin, forms.Form):
     def clean_password(self) -> None:
         password = self.cleaned_data.get("password")
         password_validation.validate_password(password, self.user)
+        return password
 
     def clean_confirm_password(self) -> None:
         password1 = self.cleaned_data.get("password")

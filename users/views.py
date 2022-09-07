@@ -10,6 +10,7 @@ from django.http.response import HttpResponse, HttpResponseBase, HttpResponseRed
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, FormView, RedirectView, TemplateView
 
 from users.tokens import EmailVerificationTokenGenerator
@@ -67,18 +68,54 @@ class ResetPasswordConfirmView(FormView):
     form_class = ResetPasswordConfirmForm
     success_url = reverse_lazy("users:login")
 
+    token_generator = EmailVerificationTokenGenerator
+    reset_url_token = "set-password"
+    reset_session_key = "_reset_password_token"
+
+    def __init__(self, **kwargs: Any) -> None:
+        self.valid_link = False
+        self.user = None
+        super().__init__(**kwargs)
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(never_cache)
+    def dispatch(self, *args: Any, **kwargs: Any) -> None:
+        token = kwargs["token"]
+
+        if token == self.reset_url_token:
+            session_token = self.request.session.get(self.reset_session_key, "")
+            if user := self.token_generator.check_token(session_token):
+                # If the token is valid, display the password reset form.
+                self.user = user
+                self.valid_link = True
+                return super().dispatch(*args, **kwargs)
+        else:
+            if self.token_generator.check_token(token):
+                # Store the token in the session and redirect to the
+                # password reset form at a URL without the token. That
+                # avoids the possibility of leaking the token in the
+                # HTTP Referer header.
+                self.request.session[self.reset_session_key] = token
+                redirect_url = self.request.path.replace(token, self.reset_url_token)
+                return HttpResponseRedirect(redirect_url)
+
+        # Display the "Password reset unsuccessful" page.
+        return self.render_to_response(self.get_context_data())
+
     def get_form_kwargs(self) -> dict[str, Any]:
         form_kwargs = super().get_form_kwargs()
-        form_kwargs["user"] = self.request.user
+        form_kwargs["user"] = self.user
         return form_kwargs
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["token"] = self.kwargs["token"]
+        context["valid_link"] = self.valid_link
         return context
 
     def form_valid(self, form: ResetPasswordConfirmForm) -> HttpResponse:
         form.save()
+        del self.request.session[self.reset_session_key]
         messages.add_message(self.request, messages.SUCCESS, "Your password has been reset. You can now sign in.")
         return super().form_valid(form)
 

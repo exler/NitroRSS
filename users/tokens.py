@@ -1,4 +1,5 @@
 import base64
+import binascii
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from typing import Optional
@@ -42,7 +43,7 @@ class JSONWebTokenGenerator(TokenGenerator):
             payload = jwt.decode(jwt_token, cls.JWT_SECRET_KEY, algorithms=["HS256"])
 
             return User.objects.get(**{k: payload[k] for k in cls.user_kwargs})
-        except (KeyError, User.DoesNotExist, jwt.ExpiredSignatureError):
+        except (KeyError, User.DoesNotExist, jwt.ExpiredSignatureError, binascii.Error):
             return None
 
 
