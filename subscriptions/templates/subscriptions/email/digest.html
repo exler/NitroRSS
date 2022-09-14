@@ -1,32 +1,27 @@
 {% extends 'email/base.html' %}
+{% load nitro_tags %}
 
 {% block title %}New entries in your subscriptions{% endblock %}
+{% block header%}Your digest{% endblock %}
 {% block content %}
 <tr>
-    <td class="bg_white email-section">
-        <div class="heading-section" style="text-align: center; padding: 0 30px;">
-            <h2>New entries in your subscriptions</h2>
-        </div>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-            {% for entry in entries %}
-            <tr>
-                <td style="padding-bottom: 30px;">
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-                    <td valign="middle" width="40%">
-                        <h6 style="width: 100%; max-width: 600px; height: auto; margin: auto; display: block;">{{ entry.feed.title }}</h6>
-                    </td>
-                    <td valign="middle" width="60%">
-                        <div class="text-blog" style="text-align: left; padding-left:25px;">
-                            <p class="meta"><span>{{ entry.date_published }}</span></p>
-                            <h2>{{ entry.title }}</h2>
-                            <p><a href="{{ entry.link }}" class="btn btn-primary">Read more</a></p>
-                        </div>
-                    </td>
-                </table>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+    <td style="padding: 30px 0 0;" class="sm-pt">
+      <table border="0" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+          <!--<td style="vertical-align: middle; padding: 0 10px 20px 0;"> <img src="" height="26" width="26" border="0" alt="Feed icon" style="display: block; font-family: arial, sans-serif; font-size: 15px; line-height: 15px; color: #3C3F44;"></td>-->
+          <td style="vertical-align: middle; padding-bottom: 20px;">
+            <h2 style="margin: 0; font-family: 'Roboto Slab', arial, sans; font-size: 19px; line-height: 19px; font-weight: bold; color: #3C3F44;">{{ feed_title }}</h2>
+          </td>
+        </tr>
+      </table>
+      {% for entry in entries %}
+      <p style="margin: 0 0 30px;">
+        <a href="{{ entry.link }}" style="font-weight: bold; color: #0077cc; text-decoration: none;">{{ entry.title }}</a>
+        <span style="color: #6A737C; font-size: 12px;" class="unstyle-auto-detected-links">{{ entry.link|baseurl }}</span>
+        <br>
+        {{ entry.description }}
+      </p>
+      {% endfor %}
     </td>
-</tr>
+</tr>  
 {% endblock %}

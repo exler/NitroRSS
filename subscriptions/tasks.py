@@ -1,11 +1,11 @@
 from celery import shared_task
 from django.db.models import Q
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 
 from feeds.models import FeedEntry
 from mailer.models import Message
+from nitrorss.utils.emails import render_email_template_to_string
 from nitrorss.utils.url import get_full_url
 
 from .models import Schedule
@@ -30,7 +30,10 @@ def notify_subscriptions() -> None:
             )
             values = entries.values("feed__subscriptions", "feed__subscriptions__target_email", "id")
             distinct_subscriptions = values.distinct("feed__subscriptions").values(
-                "feed__subscriptions", "feed__subscriptions__target_email", "feed__subscriptions__unsubscribe_token"
+                "feed__title",
+                "feed__subscriptions",
+                "feed__subscriptions__target_email",
+                "feed__subscriptions__unsubscribe_token",
             )
             db_messages = []
             for sub in distinct_subscriptions:
@@ -39,6 +42,7 @@ def notify_subscriptions() -> None:
                     "link", "title", "description"
                 )
                 context = {
+                    "feed_title": sub["feed__title"],
                     "entries": entries_for_sub,
                     "unsubscribe_url": get_full_url(
                         reverse(
@@ -46,8 +50,8 @@ def notify_subscriptions() -> None:
                         )
                     ),
                 }
-                text_message = render_to_string("subscriptions/email/digest.txt", context)
-                html_message = render_to_string("subscriptions/email/digest.html", context)
+                text_message = render_email_template_to_string("subscriptions/email/digest.txt", context)
+                html_message = render_email_template_to_string("subscriptions/email/digest.html", context)
                 db_msg = Message.make(
                     subject="Your subscription has new entries!",
                     text_content=text_message,
