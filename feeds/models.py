@@ -6,6 +6,7 @@ from django.db.models import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 
 from nitrorss.common.models import TimestampedModel
+from nitrorss.utils.strings import HTMLCleaner, smart_truncate
 
 from .utils import struct_time_to_datetime
 
@@ -46,9 +47,11 @@ class Feed(TimestampedModel):
         feed_entries: list[FeedEntry] = []
         entries = feedparser.parse(self.url).entries
 
+        html_cleaner = HTMLCleaner()
+
         for entry in entries:
             title = entry.get("title")
-            description = entry.get("description")
+            description = smart_truncate(html_cleaner.clean(entry.get("description")), 324)
             link = entry.get("link")
             authors = ", ".join([x.get("name") for x in entry.get("authors", []) if "name" in x])
             date_published = struct_time_to_datetime(entry.get("published_parsed"))
