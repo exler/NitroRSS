@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserM
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from nitrorss.common.validators import DisposableEmailBlacklistValidator
+
 
 class CustomUserManager(UserManager):
     def _create_user(self, email: str, password: str, **extra_fields: Any) -> Any:
@@ -47,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     with the built-in commands.
     """
 
-    email = models.EmailField(_("email address"), unique=True)
+    email = models.EmailField(_("email address"), unique=True, validators=[DisposableEmailBlacklistValidator()])
     name = models.CharField(_("full name"), max_length=255, blank=True)
 
     email_verified = models.BooleanField(default=False)

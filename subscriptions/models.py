@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from feeds.models import Feed
 from nitrorss.common.models import TimestampedModel
+from nitrorss.common.validators import DisposableEmailBlacklistValidator
 
 
 class Schedule(models.Model):
@@ -45,7 +46,7 @@ def get_unsubscribe_token() -> str:
 
 class Subscription(TimestampedModel):
     feed = models.ForeignKey(Feed, on_delete=models.PROTECT, related_name="subscriptions")
-    target_email = models.EmailField()
+    target_email = models.EmailField(validators=[DisposableEmailBlacklistValidator()])
 
     schedule = models.ForeignKey(Schedule, on_delete=models.PROTECT, related_name="subscriptions")
 
