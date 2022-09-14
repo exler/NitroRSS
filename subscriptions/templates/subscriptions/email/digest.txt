@@ -6,3 +6,5 @@ Post title: {{ entry.title }}
 Post date: {{ entry.date_published }}
 Link: {{ entry.link }}
 {% endfor %}
+
+To unsubscribe click here: {{ unsubscribe_url }}

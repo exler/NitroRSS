@@ -105,3 +105,20 @@ class ConfirmSubscriptionView(RedirectView):
             return super().get(request, *args, **kwargs)
         else:
             raise PermissionDenied("Invalid token")
+
+
+class UnsubscribeView(RedirectView):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> str:
+        if self.request.user.is_authenticated:
+            return reverse("subscriptions:list-subscriptions")
+        else:
+            return reverse("index")
+
+    def get(self, request: HttpRequest, token: str, *args: Any, **kwargs: Any) -> HttpResponseBase:
+        try:
+            subscription = Subscription.objects.get(unsubscribe_token=token)
+            subscription.delete()
+            messages.add_message(request, messages.SUCCESS, "You have been unsubscribed from this feed.")
+            return super().get(request, *args, **kwargs)
+        except Subscription.DoesNotExist:
+            raise PermissionDenied("Invalid token")

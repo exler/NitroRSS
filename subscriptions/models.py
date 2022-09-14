@@ -1,3 +1,5 @@
+import secrets
+
 from django.conf import settings
 from django.db import models
 from django.db.models import UniqueConstraint
@@ -34,7 +36,11 @@ class Schedule(models.Model):
 
 class SubscriptionQuerySet(models.QuerySet):
     def active(self) -> models.QuerySet:
-        return self.filter(is_active=True, is_deleted=False)
+        return self.filter(is_active=True)
+
+
+def get_unsubscribe_token() -> str:
+    return secrets.token_urlsafe(32)
 
 
 class Subscription(TimestampedModel):
@@ -47,10 +53,12 @@ class Subscription(TimestampedModel):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions", null=True, blank=True
     )
 
+    # Subscriptions can be deactivated by the user
     is_active = models.BooleanField(default=True)
-    is_deleted = models.BooleanField(default=False)
-
+    # Whether the user can confirmed the email address for this subscription
     confirmed = models.BooleanField(default=False)
+
+    unsubscribe_token = models.CharField(max_length=64, unique=True, default=get_unsubscribe_token)
 
     objects = SubscriptionQuerySet.as_manager()
 

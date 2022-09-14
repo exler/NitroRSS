@@ -28,7 +28,7 @@ class JSONWebTokenGenerator(TokenGenerator):
 
     @classmethod
     def make_token(cls, obj: Any, expiry: Optional[int] = None) -> str:
-        if expiry is None:
+        if expiry is None and cls.token_expiration:
             # Must be UTC time!
             expiry = datetime.now(tz=timezone.utc).timestamp() + cls.token_expiration
 

@@ -19,7 +19,7 @@ def check_feeds_for_new_entries(feed_ids: Optional[list[int]]) -> str:
         else:
             # Check only feeds with active subscriptions
             feed_objs = Feed.objects.select_for_update().exclude(
-                Q(subscriptions__isnull=True) | Q(subscriptions__is_active=False) | Q(subscriptions__is_deleted=True)
+                Q(subscriptions__isnull=True) | Q(subscriptions__is_active=False)
             )
 
         for feed_obj in feed_objs:
