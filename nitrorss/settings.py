@@ -4,7 +4,6 @@ import dj_database_url
 from django.contrib.messages import constants as message_constants
 from dotenv import load_dotenv
 
-from nitrorss.schedules import BEAT_SCHEDULES
 from nitrorss.utils.env import get_env_bool, get_env_int, get_env_list, get_env_str
 
 load_dotenv()
@@ -26,7 +25,7 @@ BASE_URL = get_env_str("BASE_URL")
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "debug_toolbar",
-    "django_celery_beat",
+    "django_q",
     "nitrorss",
     "mailer",
     "users",
@@ -96,18 +95,31 @@ DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": get_env_str("REDIS_CACHE_URL", "redis://localhost:6379/1"),
+        "LOCATION": get_env_str("REDIS_CACHE_URL", "redis://localhost:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
         },
-    }
+    },
+    "workers": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": get_env_str("REDIS_BROKER_URL", "redis://localhost:6379/1"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+        },
+    },
 }
 
-# Celery
+# Django Q
 
-CELERY_BROKER_URL = get_env_str("CELERY_BROKER_URL", "redis://localhost:6379/0")
-CELERY_BEAT_SCHEDULE = BEAT_SCHEDULES
+Q_CLUSTER = {
+    "name": "nitrorss",
+    "workers": 2,
+    "timeout": 15,
+    "retry": 30,
+    "django_redis": "workers",
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

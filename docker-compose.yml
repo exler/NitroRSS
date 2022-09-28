@@ -24,31 +24,11 @@ services:
       - db
       - redis
 
-  worker:
+  qcluster:
     build: .
-    command: worker
+    command: qcluster
     volumes:
       - .:/app
-    depends_on:
-      - db
-      - redis
-
-  beat:
-    build: .
-    command: beat
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - redis
-
-  flower:
-    build: .
-    command: flower
-    volumes:
-      - .:/app
-    ports:
-      - "5555:5555"
     depends_on:
       - db
       - redis

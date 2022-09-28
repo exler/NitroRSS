@@ -1,6 +1,5 @@
 from typing import Optional
 
-from celery import shared_task
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
@@ -8,8 +7,7 @@ from django.utils import timezone
 from feeds.models import Feed, FeedEntry
 
 
-@shared_task
-def check_feeds_for_new_entries(feed_ids: Optional[list[int]]) -> str:
+def check_feeds_for_new_entries(feed_ids: Optional[list[int]] = None) -> str:
     now = timezone.now()
     entry_counter = 0
 
@@ -45,7 +43,6 @@ def check_feeds_for_new_entries(feed_ids: Optional[list[int]]) -> str:
     return "No new entries."
 
 
-@shared_task
 def clean_old_entries() -> str:
     entries_deleted = FeedEntry.objects.filter(
         date_published__lt=timezone.now() - timezone.timedelta(days=30)

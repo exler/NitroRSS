@@ -1,4 +1,3 @@
-from celery import shared_task
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
@@ -11,7 +10,6 @@ from nitrorss.utils.url import get_full_url
 from .models import Schedule
 
 
-@shared_task
 def notify_subscriptions() -> None:
     notified_count = 0
     schedules = Schedule.objects.filter(subscriptions__isnull=False).exclude(
