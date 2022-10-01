@@ -10,5 +10,5 @@ def retry_deferred() -> str:
     """
     Attempt to resend all deferred messages.
     """
-    count = Message.objects.retry_deferred(new_priority=Message.PRIORITY_MEDIUM)
+    count = Message.objects.retry_deferred(new_priority=Message.DEFAULT_PRIORITY)
     return "%s message(s) retried" % count
