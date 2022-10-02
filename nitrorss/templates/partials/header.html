@@ -1,34 +1,55 @@
 {% load static %}
-<div class="container">
-  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 mb-4 border-bottom">
-    <ul class="nav col-md-1 mb-2 col-md-auto justify-content-center mb-md-0">
-      <li><a href="{% url 'index' %}" class="nav-link px-2 link-secondary">Home</a></li>
-    </ul>
 
-    <a href="{% url 'index' %}" class="d-flex align-items-center text-center col-md-9 mb-md-0 text-decoration-none">
-      <img class="m-auto" alt="NitroRSS" src="{% static 'img/nitrorss-logo.png' %}" width="128">
-    </a>
-
-    <div class="col-md-2 d-flex align-items-center justify-content-end">
-    {% if user.is_authenticated %}
-      <a href="{% url 'subscriptions:list-subscriptions' %}" class="btn btn-secondary" style="margin-right: 1rem;">Dashboard</a>
-      <div class="dropdown" x-data="{ open: false }" x-on:click.outside="open = false">
-        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle show" x-on:click="open = !open">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-          </svg>
+<div class="navbar bg-base-100">
+    <div class="flex-1">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'img/nitrorss-logo.png' %}" alt="NitroRSS" width="128">
         </a>
-        <ul x-show="open" class="dropdown-menu dropdown-menu-position-fix text-small show">
-          <li><a class="dropdown-item" href="{% url 'users:account' %}">Settings</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="{% url 'users:logout' %}">Sign out</a></li>
-        </ul>
-      </div>
-    {% else %}
-      <a href="{% url 'users:login' %}" class="btn btn-outline-primary me-2">Login</a>
-      <a href="{% url 'users:register' %}" class="btn btn-primary">Sign up</a>
-    {% endif %}
     </div>
-  </header>
+    {% if user.is_authenticated %}
+        <div class="flex-none">
+            <ul class="menu menu-horizontal p-0">
+                <li>
+                    <a href="{% url 'subscriptions:list-subscriptions' %}">Subscriptions</a>
+                </li>
+            </ul>
+        </div>
+        <div class="ml-4 dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                <div class="w-6 rounded-full">
+                    <svg class="w-6 h-6"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                    </svg>
+                </div>
+            </label>
+            <ul tabindex="0"
+                class="shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+                <li class="menu-title">
+                    <span>{{ user.full_name }}</span>
+                </li>
+                <li>
+                    <a href="{% url 'users:account' %}">Settings</a>
+                </li>
+                <li>
+                    <a href="{% url 'users:logout' %}">Sign out</a>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="flex-none">
+            <ul class="menu menu-horizontal p-0">
+                <li>
+                    <a href="{% url 'users:login' %}">Sign in</a>
+                </li>
+                <li>
+                    <a href="{% url 'users:register' %}" class="btn">Sign up</a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
 </div>

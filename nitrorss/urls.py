@@ -3,12 +3,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import IndexView
+from .views import IndexView, PrivacyView
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path("admin/", admin.site.urls),
     path("", include("users.urls")),
     path("", IndexView.as_view(), name="index"),
+    path("privacy/", PrivacyView.as_view(), name="privacy"),
     path("subscriptions/", include("subscriptions.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
