@@ -1,34 +1,37 @@
 {% extends 'base.html' %}
+
 {% load static nitro_tags %}
 
-{% block title %}Sign up{% endblock %}
-{% block extra_styles %}
-<link rel="stylesheet" href="{% static 'css/login_form.css' %}">
-{% endblock %}
-
+{% block title %}Sign Up{% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <form action="{% url 'users:register' %}" method="POST">
+    <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
+        <form action="{% url 'users:register' %}" method="POST" class="card-body">
             {% csrf_token %}
             {{ form.non_field_errors }}
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                {{ form.email|addclass:"input input-bordered" }}
                 {{ form.email.errors }}
-                {{ form.email.label_tag }}
-                {{ form.email|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Password</span>
+                </label>
+                {{ form.password|addclass:"input input-bordered" }}
                 {{ form.password.errors }}
-                {{ form.password.label_tag }}
-                {{ form.password|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Confirm password</span>
+                </label>
+                {{ form.confirm_password|addclass:"input input-bordered" }}
                 {{ form.confirm_password.errors }}
-                {{ form.confirm_password.label_tag }}
-                {{ form.confirm_password|addclass:'form-control' }}
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Sign up</button>
+            <div class="form-control mt-6">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
         </form>
     </div>
-</div>
 {% endblock %}

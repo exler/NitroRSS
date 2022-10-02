@@ -1,54 +1,70 @@
 {% extends 'base.html' %}
+
 {% load static nitro_tags %}
 
 {% block title %}Manage Subscription{% endblock %}
 {% block extra_styles %}
-<link rel="stylesheet" href="{% static 'css/index_form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index_form.css' %}">
 {% endblock %}
-
 {% block content %}
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <form action="{% url 'subscriptions:manage-subscription' object.pk %}" method="POST">
+    <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
+        <form action="{% url 'subscriptions:manage-subscription' object.pk %}"
+              method="POST"
+              class="card-body">
             {% csrf_token %}
             {{ form.non_field_errors }}
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Feed URL</span>
+                </label>
+                {{ form.feed_url|addclass:"input input-bordered" }}
                 {{ form.feed_url.errors }}
-                {{ form.feed_url.label_tag }}
-                {{ form.feed_url|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Feed Title</span>
+                </label>
+                {{ form.feed_title|addclass:"input input-bordered" }}
                 {{ form.feed_title.errors }}
-                {{ form.feed_title.label_tag }}
-                {{ form.feed_title|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Feed Description</span>
+                </label>
+                {{ form.feed_description|addclass:"input input-bordered" }}
                 {{ form.feed_description.errors }}
-                {{ form.feed_description.label_tag }}
-                {{ form.feed_description|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Feed Last Update</span>
+                </label>
+                {{ form.feed_last_update|addclass:"input input-bordered" }}
                 {{ form.feed_last_update.errors }}
-                {{ form.feed_last_update.label_tag }}
-                {{ form.feed_last_update|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Subscription Added</span>
+                </label>
+                {{ form.subscription_added|addclass:"input input-bordered" }}
                 {{ form.subscription_added.errors }}
-                {{ form.subscription_added.label_tag }}
-                {{ form.subscription_added|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Schedule</span>
+                </label>
+                {{ form.schedule|addclass:"input input-bordered" }}
                 {{ form.schedule.errors }}
-                {{ form.schedule.label_tag }}
-                {{ form.schedule|addclass:'form-control select-arrow' }}
             </div>
-            <div class="form-check mb-2">
-                {{ form.is_active.errors }}
-                {{ form.is_active.label_tag }}
-                {{ form.is_active|addclass:'form-check-input' }}
+            <div class="form-control">
+                <label class="cursor-pointer label">
+                    <span class="label-text">Is active</span>
+                    {{ form.is_active|addclass:"checkbox checkbox-accent" }}
+                    {{ form.is_active.errors }}
+                </label>
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Update</button>
+            <div class="form-control mt-6">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
         </form>
     </div>
-</div>
 {% endblock %}

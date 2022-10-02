@@ -1,78 +1,81 @@
 {% extends 'base.html' %}
 
 {% block title %}Subscriptions{% endblock %}
-
 {% block content %}
-
-<div class="row">
-    <div class="col-md-3">
-        <a class="btn btn-primary" href="{% url 'subscriptions:add-subscription' %}">Add</a>
+    <div class="overflow-x-auto">
+        <div class="w-full py-2">
+            <a class="btn btn-primary"
+               href="{% url 'subscriptions:add-subscription' %}">Add</a>
+        </div>
+        <table class="table w-full">
+            <thead>
+                <tr>
+                    <th>Feed</th>
+                    <th>Added</th>
+                    <th>Last Update</th>
+                    <th>Schedule</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscription in object_list %}
+                    <tr class="hover">
+                        <th>{{ subscription.feed.title }}</th>
+                        <td>{{ subscription.created_at }}</td>
+                        <td>
+                            {% if subscription.feed.latest_entry %}
+                                {{ subscription.feed.latest_entry.date_published }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
+                        <td>{{ subscription.schedule }}</td>
+                        <td class="inline-flex">
+                            <a href="{% url 'subscriptions:manage-subscription' subscription.pk %}">
+                                <svg class="w-6 h-6"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                            </a>
+                            <a class="ml-2"
+                               href="{% url 'subscriptions:delete-subscription' subscription.pk %}">
+                                <svg class="w-6 h-6"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="100%">No subscriptions yet</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</div>
-
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Feed</th>
-        <th scope="col">Added</th>
-        <th scope="col">Last update</th>
-        <th scope="col">Schedule</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-        {% for subscription in object_list %}
-        <tr>
-            <td>{{ subscription.feed.title }}</td>
-            <td>{{ subscription.created_at }}</td>
-            <td>{% if subscription.feed.latest_entry %}{{ subscription.feed.latest_entry.date_published }}{% else %}Never{% endif %}</td>
-            <td>{{ subscription.schedule }}</td>
-            <td>
-                <a href="{% url 'subscriptions:manage-subscription' subscription.pk %}">Edit</a>
-                <a href="{% url 'subscriptions:delete-subscription' subscription.pk %}">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <td colspan="100%">No subscriptions yet</td>
-        {% endfor %}
-    </tbody>
-</table>
-
-{% if is_paginated %}
-<nav>
-    <ul class="pagination justify-content-center">
-    {% if page_obj.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="{% url 'subscriptions:list-subscriptions' %}?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-    {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
+    {% if is_paginated %}
+        <div class="btn-group w-full mx-auto">
+            {% if page_obj.has_previous %}
+                <a href="{% url 'subscriptions:list-subscriptions' %}?page={{ page_obj.previous_page_number }}"
+                   class="btn">&laquo;</a>
+            {% endif %}
+            {% for object in page_obj.paginator.page_range %}
+                <a href="{% url 'subscriptions:list-subscriptions' %}?page={{ forloop.counter }}"
+                   class="btn {% if object == page_obj.number %}btn-active{% endif %}">{{ forloop.counter }}</a>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="{% url 'subscriptions:list-subscriptions' %}?page={{ page_obj.next_page_number }}"
+                   class="btn">&raquo;</a>
+            {% endif %}
+        </div>
     {% endif %}
-    {% for object in page_obj.paginator.page_range %}
-        <li class="page-item">
-            <a class="page-link" href="{% url 'subscriptions:list-subscriptions' %}?page={{ forloop.counter }}">{{ forloop.counter }}</a>
-        </li>
-    {% endfor %} 
-    {% if page_obj.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="{% url 'subscriptions:list-subscriptions' %}?page={{ page_obj.next_page_number }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    {% endif %}
-    </ul>
-</nav>
-{% endif %}
 {% endblock %}

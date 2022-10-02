@@ -30,6 +30,7 @@ flake8-annotations = "^2.9.0"
 django-stubs = "^1.12.0"
 types-requests = "^2.27.30"
 ipython = "^8.4.0"
+djlint = "^1.18.0"
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -40,6 +41,21 @@ django_settings_module = "nitrorss.settings"
 
 [tool.isort]
 profile = "black"
+
+[tool.djlint]
+profile = "django"
+use_gitignore = true
+indent = 4
+blank_line_after_tag="load,extends,include"
+blank_line_before_tag="load,extends,include"
+format_js = true
+format_css = true
+
+[tool.djlint.js]
+indent_size = 4
+
+[tool.djlint.css]
+indent_size = 2
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

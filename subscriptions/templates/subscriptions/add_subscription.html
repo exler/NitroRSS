@@ -1,46 +1,62 @@
 {% extends 'base.html' %}
+
 {% load static nitro_tags %}
 
 {% block title %}Add Subscription{% endblock %}
 {% block extra_styles %}
-<link rel="stylesheet" href="{% static 'css/index_form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index_form.css' %}">
 {% endblock %}
-
 {% block content %}
-<div class="row">
-    <div class="col-md-6 offset-md-3" x-data="{ open: false }">
-        <form id="subscription-add-form" hx-post="/subscriptions/add/" hx-target="body">
+    <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
+        <form id="subscription-add-form"
+              hx-post="/subscriptions/add/"
+              hx-target="body"
+              class="card-body">
             {% csrf_token %}
             {{ form.non_field_errors }}
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">URL</span>
+                </label>
+                {{ form.url|addclass:"input input-bordered" }}
                 {{ form.url.errors }}
-                {{ form.url.label_tag }}
-                {{ form.url|addclass:'form-control' }}
             </div>
-            <div class="form-group mb-2">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Schedule</span>
+                </label>
+                {{ form.schedule|addclass:"input input-bordered" }}
                 {{ form.schedule.errors }}
-                {{ form.schedule.label_tag }}
-                {{ form.schedule|addclass:'form-control select-arrow' }}
             </div>
-            <button class="btn btn-primary mt-2">Subscribe</button>
+            <div class="form-control mt-6">
+                <button type="submit" class="btn btn-primary">Find feeds</button>
+            </div>
         </form>
-        {% if feeds %}
-        <hr>
-        <div class="mt-4">
-            <h4>Feeds</h4>
-            <ul>
-                {% for feed in feeds %}
-                <li>
-                    Title: {{ feed.title }}, url: {{ feed.url }}, subscribe:
-                    <form hx-post="/subscriptions/add/" hx-target="body" hx-include="#subscription-add-form">
-                        <input type="hidden" name="url" value="{{ feed.url }}">
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
     </div>
-</div>
-{% endblock %}
+    {% if feeds %}
+        <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
+            {% for feed in feeds %}
+                <div class="p-2 sm:w-1/2 w-full">
+                    <form hx-post="/"
+                          hx-target="body"
+                          hx-include="#subscription-add-form"
+                          class="card bg-base-200 hover:bg-base-300 rounded flex h-full">
+                        <button type="submit" class="flex items-center p-4 h-full w-full">
+                            <input type="hidden" name="url" value="{{ feed.url }}">
+                            <svg class="w-6 h-6 flex-shrink-0 mr-4"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z">
+                                </path>
+                            </svg>
+                            <span>{{ feed.title }}</span>
+                            <span class="pl-4 text-xs text-gray-500">{{ feed.url }}
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endblock %}

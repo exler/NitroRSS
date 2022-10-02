@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseBase
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from feeds.models import Feed
 from feeds.rss import find_feeds
@@ -49,3 +49,7 @@ class IndexView(CreateView):
                 return self.form_invalid(form)
         else:
             return self.form_invalid(form)
+
+
+class PrivacyView(TemplateView):
+    template_name = "nitrorss/privacy.html"

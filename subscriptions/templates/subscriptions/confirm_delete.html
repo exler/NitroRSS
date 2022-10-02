@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}Subscriptions{% endblock %}
-
+{% block title %}Delete subscription{% endblock %}
 {% block content %}
-
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <form method="POST">
+    <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
+        <form method="POST" class="card-body">
             {% csrf_token %}
-            <p>Are you sure you want to delete subscription to "{{ object.feed.title }}"?</p>
-            <input class="btn btn-primary" type="submit" value="Confirm">
+            {{ form.non_field_errors }}
+            <h2 class="card-title">Confirm deletion</h2>
+            <p class="card-subtitle text-base-content text-opacity-60">
+                Are you sure you want to delete the subscription to "{{ object.feed.title }}"?
+            </p>
+            <div class="form-control mt-6">
+                <button type="submit" class="btn btn-error">Confirm</button>
+            </div>
         </form>
     </div>
-</div>
-
 {% endblock %}

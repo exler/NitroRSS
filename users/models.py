@@ -69,3 +69,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return f"{self.name} ({self.email})" if self.name else self.email
+
+    @property
+    def full_name(self) -> str:
+        return self.name or self.email

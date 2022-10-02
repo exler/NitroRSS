@@ -26,6 +26,7 @@ from .models import Subscription
 
 class SubscriptionsView(LoginRequiredMixin, ListView):
     template_name = "subscriptions/subscriptions.html"
+    paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Subscription]:
         return Subscription.objects.filter(created_by=self.request.user)
