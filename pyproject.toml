@@ -20,6 +20,7 @@ whitenoise = {extras = ["brotli"], version = "^6.2.0"}
 gunicorn = {extras = ["gthread"], version = "^20.1.0"}
 feedparser = "^6.0.10"
 PyJWT = "^2.4.0"
+rollbar = "^0.16.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

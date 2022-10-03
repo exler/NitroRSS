@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import dj_database_url
+import rollbar
 from django.contrib.messages import constants as message_constants
 from dotenv import load_dotenv
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
 ROOT_URLCONF = "nitrorss.urls"
@@ -94,16 +96,12 @@ DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": get_env_str("REDIS_CACHE_URL", "redis://localhost:6379/0"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-        },
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unlovable-nervous-system",
     },
     "workers": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": get_env_str("REDIS_BROKER_URL", "redis://localhost:6379/1"),
+        "LOCATION": get_env_str("REDIS_BROKER_URL", "redis://localhost:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
@@ -185,3 +183,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Rollbar
+
+ROLLBAR_CONFIG = {
+    "access_token": get_env_str("ROLLBAR_ACCESS_TOKEN"),
+    "environment": "development" if DEBUG else "production",
+    "root": BASE_DIR,
+}
+rollbar.init(**ROLLBAR_CONFIG)
