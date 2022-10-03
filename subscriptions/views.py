@@ -59,6 +59,7 @@ class AddSubscriptionView(LoginRequiredMixin, CreateView):
                 # Make new response that will trigger HTMX to redirect
                 response = HttpResponse()
                 response["HX-Redirect"] = self.get_success_url()
+                messages.add_message(request, messages.SUCCESS, f"You have subscribed to '{form.cleaned_data['url']}'")
                 return response
             except Feed.DoesNotExist:
                 feeds = find_feeds(url)

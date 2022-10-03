@@ -3,9 +3,6 @@
 {% load static nitro_tags %}
 
 {% block title %}Manage Subscription{% endblock %}
-{% block extra_styles %}
-    <link rel="stylesheet" href="{% static 'css/index_form.css' %}">
-{% endblock %}
 {% block content %}
     <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
         <form action="{% url 'subscriptions:manage-subscription' object.pk %}"

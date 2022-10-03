@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import dj_database_url
-import rollbar
 from django.contrib.messages import constants as message_constants
 from dotenv import load_dotenv
 
@@ -51,8 +50,41 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        "rollbar": {
+            # This will be replaced by a real handler if Rollbar is enabled
+            "class": "logging.NullHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "rollbar"],
+            "level": "INFO",
+            "propagate": True,
+        }
+    },
+}
+
+if ROLLBAR_ACCESS_TOKEN := get_env_str("ROLLBAR_ACCESS_TOKEN"):
+    LOGGING["handlers"]["rollbar"].update(
+        {
+            "access_token": ROLLBAR_ACCESS_TOKEN,
+            "environment": "production" if not DEBUG else "development",
+            "class": "rollbar.logger.RollbarHandler",
+        }
+    )
+    MIDDLEWARE.append(
+        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
+    )
+
 
 ROOT_URLCONF = "nitrorss.urls"
 
@@ -84,6 +116,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "nitrorss" / "static",
 ]
 
+COMPRESS_OFFLINE = not DEBUG
 COMPRESS_STORAGE = "compressor.storage.BrotliCompressorFileStorage"
 
 # Database
@@ -137,6 +170,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# CSRF
+
+CSRF_TRUSTED_ORIGINS = get_env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
+
 # Authentication
 
 AUTH_USER_MODEL = "users.User"
@@ -183,12 +220,3 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Rollbar
-
-ROLLBAR_CONFIG = {
-    "access_token": get_env_str("ROLLBAR_ACCESS_TOKEN"),
-    "environment": "development" if DEBUG else "production",
-    "root": BASE_DIR,
-}
-rollbar.init(**ROLLBAR_CONFIG)
