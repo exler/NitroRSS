@@ -16,4 +16,5 @@ class Command(BaseCommand):
             schedule("mailer.tasks.retry_deferred", schedule_type="C", cron="*/30 * * * *")
             schedule("subscriptions.tasks.notify_subscriptions", schedule_type="C", cron="*/5 * * * *")
             self.stdout.write(self.style.SUCCESS("Successfully created schedules"))
-        self.stdout.write(self.style.WARNING("Schedules already exist"))
+        else:
+            self.stdout.write(self.style.WARNING("Schedules already exist"))
