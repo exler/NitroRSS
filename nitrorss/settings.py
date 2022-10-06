@@ -175,6 +175,7 @@ AUTHENTICATION_BACKENDS = ["users.backends.EmailVerificationRequiredBackend"]
 
 # Emails
 
+DEFAULT_FROM_EMAIL = get_env_str("DEFAULT_FROM_EMAIL")
 EMAIL_BACKEND = "mailer.backend.DatabaseBackend"
 EMAIL_HOST = get_env_str("EMAIL_HOST")
 EMAIL_PORT = get_env_int("EMAIL_PORT")
