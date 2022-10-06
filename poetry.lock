@@ -283,21 +283,6 @@ rollbar = ["django-q-rollbar (>=0.1)"]
 sentry = ["django-q-sentry (>=0.1)"]
 
 [[package]]
-name = "django-redis"
-version = "5.2.0"
-description = "Full featured redis cache backend for Django."
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-Django = ">=2.2"
-redis = ">=3,<4.0.0 || >4.0.0,<4.0.1 || >4.0.1"
-
-[package.extras]
-hiredis = ["redis[hiredis] (>=3,!=4.0.0,!=4.0.1)"]
-
-[[package]]
 name = "django-stubs"
 version = "1.12.0"
 description = "Mypy stubs for Django"
@@ -994,7 +979,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5e59373f2f7d41d5affdd84a75f732a31fa54fec3075a4fe58da270aefae28a2"
+content-hash = "a6b523c42047e74a99878f9e2e6e41d5536c93c40dda2d15a5cbec1d5d396115"
 
 [metadata.files]
 ansicon = []
@@ -1105,7 +1090,6 @@ django-compressor = []
 django-debug-toolbar = []
 django-picklefield = []
 django-q = []
-django-redis = []
 django-stubs = [
     {file = "django-stubs-1.12.0.tar.gz", hash = "sha256:ea8b35d0da49f7b2ee99a79125f1943e033431dd114726d6643cc35de619230e"},
     {file = "django_stubs-1.12.0-py3-none-any.whl", hash = "sha256:0dff8ec0ba3abe046450b3d8a29ce9e72629893d2c1ef679189cc2bfdb6d2f64"},

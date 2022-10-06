@@ -82,7 +82,7 @@ if ROLLBAR_ACCESS_TOKEN := get_env_str("ROLLBAR_ACCESS_TOKEN"):
         }
     )
     MIDDLEWARE.append(
-        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
+        "rollbar.contrib.django.middleware.RollbarNotifierMiddlewareExcluding404",
     )
 
 
@@ -131,25 +131,19 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "unlovable-nervous-system",
-    },
-    "workers": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": get_env_str("REDIS_BROKER_URL", "redis://localhost:6379/0"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-        },
-    },
+    }
 }
 
 # Django Q
 
 Q_CLUSTER = {
     "name": "nitrorss",
-    "workers": 2,
+    "workers": 1,
     "timeout": 15,
     "retry": 30,
-    "django_redis": "workers",
+    "catch_up": False,
+    "compress": False,
+    "redis": get_env_str("REDIS_BROKER_URL", "redis://localhost:6379/0"),
 }
 
 # Password validation
