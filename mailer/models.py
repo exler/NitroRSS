@@ -114,6 +114,10 @@ class Message(MessageDataPropertiesMixin, TimestampedModel):
         db_msg = Message(email=email, priority=priority)
         return db_msg
 
+    def defer(self) -> None:
+        self.priority = self.Priorities.DEFERRED
+        self.save(update_fields=["priority"])
+
 
 class MessageLog(MessageDataPropertiesMixin, models.Model):
     """
