@@ -138,12 +138,14 @@ CACHES = {
 
 Q_CLUSTER = {
     "name": "nitrorss",
-    "workers": 1,
-    "timeout": 15,
-    "retry": 30,
+    "workers": 2,
+    "timeout": 30,
+    "retry": 60,
     "catch_up": False,
     "compress": False,
-    "redis": get_env_str("REDIS_BROKER_URL", "redis://localhost:6379/0"),
+    "queue_limit": 20,
+    "bulk": 10,
+    "orm": "default",
 }
 
 # Password validation

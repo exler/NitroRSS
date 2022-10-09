@@ -10,9 +10,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  redis:
-    image: redis:7-alpine
-
   web:
     build: .
     command: server
@@ -22,7 +19,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-      - redis
 
   qcluster:
     build: .
@@ -31,7 +27,6 @@ services:
       - .:/app
     depends_on:
       - db
-      - redis
 
 volumes:
   postgres_data:
