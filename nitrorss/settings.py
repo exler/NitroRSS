@@ -69,7 +69,12 @@ LOGGING = {
             "handlers": ["console", "rollbar"],
             "level": "INFO",
             "propagate": True,
-        }
+        },
+        "django.request": {
+            "handlers": ["console", "rollbar"],
+            "level": "ERROR",
+            "propagate": False,
+        },
     },
 }
 
