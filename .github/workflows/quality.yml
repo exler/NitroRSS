@@ -1,0 +1,88 @@
+name: Quality
+on: [push]
+
+jobs:
+  black:
+    name: Formatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install black
+        run: pip install black
+
+      - name: Run black
+        run: black . -l 120 --check
+
+  flake8:
+    name: Python linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install flake8
+        run: pip install flake8 flake8-annotations
+
+      - name: Run flake8
+        run: flake8 . --count --statistics --show-source
+
+  mypy:
+    name: Template linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install djlint
+        run: pip install djlint
+
+      - name: Run djlint
+        run: djlint . --check
+
+  bandit:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install bandit
+        run: pip install bandit[toml]
+
+      - name: Run bandit
+        run: bandit . -r -c "pyproject.toml"
+
+  isort:
+    name: Sorting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install isort
+        run: pip install isort
+
+      - name: Run isort
+        run: isort . --check
