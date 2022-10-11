@@ -78,7 +78,7 @@ class ResetPasswordConfirmView(FormView):
     success_url = reverse_lazy("users:login")
 
     token_generator = EmailVerificationTokenGenerator
-    reset_url_token = "set-password"
+    reset_url_token = "set-password"  # nosec B105
     reset_session_key = "_reset_password_token"
 
     def __init__(self, **kwargs: Any) -> None:

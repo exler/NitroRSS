@@ -1,5 +1,5 @@
 import base64
-import pickle
+import pickle  # nosec B403
 
 from django.core.mail import EmailMessage
 
@@ -11,4 +11,4 @@ class EmailDatabaseSerializer:
 
     @staticmethod
     def db_to_email(data: str) -> EmailMessage | None:
-        return pickle.loads(base64.decodebytes(data.encode("ascii")))
+        return pickle.loads(base64.decodebytes(data.encode("ascii")))  # nosec B301
