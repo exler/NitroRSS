@@ -1,5 +1,6 @@
 from django.contrib import admin, messages
 from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import URLPattern, path, reverse
 
@@ -33,7 +34,7 @@ class MessageAdmin(admin.ModelAdmin):
         app_label = opts.app_label
         model_name = opts.model_name
 
-        def render_page() -> str:
+        def render_page() -> HttpResponse:
             request.current_app = self.admin_site.name
             return render(
                 request,

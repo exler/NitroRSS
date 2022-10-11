@@ -2822,6 +2822,11 @@ body[dir="rtl"] .checkbox:checked,
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
 }
 
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -3013,9 +3018,14 @@ body[dir="rtl"] .checkbox:checked,
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-indigo-600:hover {
+.hover\:bg-gray-600:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(79 70 229 / var(--tw-bg-opacity));
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-yellow-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
 .focus\:outline-none:focus {

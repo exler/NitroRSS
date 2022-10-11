@@ -28,6 +28,15 @@ from .forms import (
 class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = "users/register.html"
+    success_url = reverse_lazy("users:login")
+
+    def form_valid(self, form: RegisterForm) -> HttpResponseBase:
+        messages.add_message(
+            self.request,
+            messages.INFO,
+            "Your account has been created. Please check your email to verify your account.",
+        )
+        return super().form_valid(form)
 
 
 class VerifyEmailView(RedirectView):

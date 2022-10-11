@@ -12,8 +12,10 @@ from .models import Schedule
 
 def notify_subscriptions() -> None:
     notified_count = 0
-    schedules = Schedule.objects.filter(subscriptions__isnull=False).exclude(
-        Q(subscriptions__is_active=False) | Q(subscriptions__confirmed=False)
+    schedules = (
+        Schedule.objects.exclude(subscriptions=None)
+        .filter(Q(subscriptions__is_active=True) & Q(subscriptions__confirmed=True))
+        .distinct()
     )
     for schedule in schedules:
         if schedule.should_check:

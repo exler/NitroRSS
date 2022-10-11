@@ -12,7 +12,7 @@ class Command(BaseCommand):
         if not Schedule.objects.exists():
             schedule("feeds.tasks.check_feeds_for_new_entries", schedule_type="C", cron="*/5 * * * *")
             schedule("feeds.tasks.clean_old_entries", schedule_type="C", cron="30 2 * * *")
-            schedule("mailer.tasks.send_mail", schedule_type="C", cron="*/2 * * * *")
+            schedule("mailer.tasks.send_mail", schedule_type="C", cron="* * * * *")
             schedule("mailer.tasks.retry_deferred", schedule_type="C", cron="*/30 * * * *")
             schedule("subscriptions.tasks.notify_subscriptions", schedule_type="C", cron="*/5 * * * *")
             self.stdout.write(self.style.SUCCESS("Successfully created schedules"))
