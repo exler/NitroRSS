@@ -14,6 +14,7 @@ class Command(BaseCommand):
             schedule("feeds.tasks.clean_old_entries", schedule_type="C", cron="30 2 * * *")
             schedule("mailer.tasks.send_mail", schedule_type="C", cron="* * * * *")
             schedule("mailer.tasks.retry_deferred", schedule_type="C", cron="*/30 * * * *")
+            schedule("mailer.tasks.clean_old_logs", schedule_type="C", cron="30 3 * * *")
             schedule("subscriptions.tasks.notify_subscriptions", schedule_type="C", cron="*/5 * * * *")
             self.stdout.write(self.style.SUCCESS("Successfully created schedules"))
         else:
