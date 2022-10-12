@@ -22,6 +22,7 @@ class Schedule(models.Model):
     units = models.CharField(max_length=32, choices=Units.choices)
 
     last_check = models.DateTimeField(null=True, blank=True)
+    last_notification = models.DateTimeField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name

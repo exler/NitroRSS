@@ -21,9 +21,9 @@ def notify_subscriptions() -> None:
         if schedule.should_check:
             entries = (
                 FeedEntry.objects.filter(
-                    feed__subscriptions__schedule_id=schedule.id, date_published__gt=schedule.last_check
+                    feed__subscriptions__schedule_id=schedule.id, date_published__gt=schedule.last_notification
                 )
-                if schedule.last_check
+                if schedule.last_notification
                 else FeedEntry.objects.filter(
                     feed__subscriptions__schedule_id=schedule.id,
                 )
@@ -61,9 +61,11 @@ def notify_subscriptions() -> None:
                 db_messages.append(db_msg)
 
             messages = Message.objects.bulk_create(db_messages)
+            schedule.last_notification = timezone.now()
+
             notified_count += len(messages)
 
         schedule.last_check = timezone.now()
-        schedule.save(update_fields=["last_check"])
+        schedule.save(update_fields=["last_check", "last_notification"])
 
     return f"Notified {notified_count} subscriptions"
