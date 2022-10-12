@@ -2,7 +2,7 @@ import contextlib
 import logging
 import smtplib
 from enum import Enum
-from typing import ContextManager, Iterable, Type
+from typing import ContextManager, Iterable, Optional, Type
 
 from django.conf import global_settings
 from django.core.mail import get_connection
@@ -36,25 +36,30 @@ def sender_context(message: Message) -> None:
             yield None
 
 
-def get_messages_for_sending() -> Iterable[ContextManager]:
+def get_messages_for_sending(messages: Optional[Iterable[Message]] = None) -> Iterable[ContextManager]:
     """
     Returns a series of context managers that are used for sending mails in the queue.
     Entering the context manager returns the actual message.
     """
-    for message in Message.objects.prioritize():
+    if messages is None:
+        messages = Message.objects.prioritize()
+
+    for message in messages:
         yield sender_context(message)
 
 
-def send_all() -> None:
+def send_messages(messages: Optional[Iterable[Message]] = None) -> None:
     """
-    Send all eligible messages in the queue.
+    Send eligible messages in the queue.
+
+    If messages is None, all eligible messages will be sent.
     """
     email_backend = global_settings.EMAIL_BACKEND
 
     counts = {e.value: 0 for e in SendAction}
 
     connection = None
-    for message_context in get_messages_for_sending():
+    for message_context in get_messages_for_sending(messages):
         with message_context as message:
             if message is None:
                 # Lock not acquired

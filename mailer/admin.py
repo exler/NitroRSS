@@ -1,9 +1,13 @@
+from typing import Optional
+
 from django.contrib import admin, messages
+from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import URLPattern, path, reverse
 
+from mailer.engine import send_messages
 from mailer.forms import SendTestEmailForm
 from mailer.models import Message, MessageLog
 
@@ -15,8 +19,15 @@ class MessageAdmin(admin.ModelAdmin):
     exclude = ["message_data"]
     readonly_fields = ["subject", "recipients"]
 
+    actions = ["send_messages"]
+
     def has_add_permission(self, request: HttpRequest) -> bool:
         return False
+
+    @admin.action(description="Send messages")
+    def send_messages(self, request: HttpRequest, queryset: QuerySet) -> None:
+        send_messages(queryset)
+        messages.add_message(request, level=messages.SUCCESS, message="Messages sent")
 
     def get_urls(self) -> list[URLPattern]:
         urls = super().get_urls()
@@ -61,8 +72,11 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(MessageLog)
 class MessageLogAdmin(admin.ModelAdmin):
+    list_display = ["id", "when_added", "when_attempted", "result"]
     exclude = ["message_data"]
-    readonly_fields = ["subject", "recipients"]
 
     def has_add_permission(self, request: HttpRequest) -> bool:
+        return False
+
+    def has_change_permission(self, request: HttpRequest, obj: Optional[MessageLog] = None) -> bool:
         return False
