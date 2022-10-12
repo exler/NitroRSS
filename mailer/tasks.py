@@ -1,11 +1,11 @@
 from django.utils import timezone
 
-from .engine import send_all
+from .engine import send_messages
 from .models import Message, MessageLog
 
 
 def send_mail() -> None:
-    send_all()
+    send_messages()
 
 
 def retry_deferred() -> str:
