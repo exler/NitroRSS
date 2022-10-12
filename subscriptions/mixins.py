@@ -44,6 +44,10 @@ class AddSubscriptionMixin:
             except Feed.DoesNotExist:
                 # Feed is not found, so we can search for possible feeds and display them to user
                 feeds = find_feeds(url)
+                if not feeds:
+                    messages.add_message(request, messages.ERROR, "No feeds found.")
+                    return self.render_to_response(self.get_context_data())
+
                 return self.render_to_response(self.get_context_data(feeds=feeds))
             except IntegrityError:
                 form.add_error("url", "This feed is already subscribed.")

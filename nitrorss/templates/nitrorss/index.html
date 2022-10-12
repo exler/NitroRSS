@@ -47,36 +47,30 @@
                 </div>
             </div>
         </div>
-        {% if feeds is None %}
-            <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
-                {% for feed in feeds %}
-                    <div class="p-2 sm:w-1/2 w-full">
-                        <form hx-post="/"
-                              hx-target="body"
-                              hx-include="#subscription-add-form"
-                              class="card bg-base-200 hover:bg-base-300 rounded flex h-full">
-                            <button type="submit" class="flex items-center p-4 h-full w-full">
-                                <input type="hidden" name="url" value="{{ feed.url }}">
-                                <svg class="w-6 h-6 flex-shrink-0 mr-4"
-                                     fill="none"
-                                     stroke="currentColor"
-                                     viewBox="0 0 24 24"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z">
-                                    </path>
-                                </svg>
-                                <span>{{ feed.title }}</span>
-                                <span class="pl-4 text-xs text-gray-500">{{ feed.url }}
-                                </button>
-                            </form>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
-                    <div class="p-2 sm:w-1/2 w-full">No feeds found</div>
-                </div>
-            {% endif %}
+        <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
+            {% for feed in feeds %}
+                <div class="p-2 sm:w-1/2 w-full">
+                    <form hx-post="/"
+                          hx-target="body"
+                          hx-include="#index-add-form"
+                          class="card bg-base-200 hover:bg-base-300 rounded flex h-full">
+                        <button type="submit" class="flex items-center p-4 h-full w-full">
+                            <input type="hidden" name="url" value="{{ feed.url }}">
+                            <svg class="w-6 h-6 flex-shrink-0 mr-4"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z">
+                                </path>
+                            </svg>
+                            <span>{{ feed.title }}</span>
+                            <span class="pl-4 text-xs text-gray-500">{{ feed.url }}
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
         <div class="overflow-hidden">
             <div class="container px-5 py-24 mx-auto text-white">
@@ -215,8 +209,7 @@
                                          stroke-width="2.5"
                                          class="w-3 h-3"
                                          viewBox="0 0 24 24">
-                                        <path d="M20 6L9 17l-5-5">
-                                        </path>
+                                        <path d="M20 6L9 17l-5-5"></path>
                                     </svg>
                                 </span>
                                 ... and more!
