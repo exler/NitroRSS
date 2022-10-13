@@ -51,7 +51,8 @@ class Feed(TimestampedModel):
 
         for entry in entries:
             title = entry.get("title")
-            description = smart_truncate(html_cleaner.clean(entry.get("description")), 324)
+            clean_text = html_cleaner.clean(entry.get("description"))
+            description = smart_truncate(clean_text, 324).rstrip(",").strip()
             link = entry.get("link")
             authors = ", ".join([x.get("name") for x in entry.get("authors", []) if "name" in x])
             date_published = struct_time_to_datetime(entry.get("published_parsed"))
