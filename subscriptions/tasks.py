@@ -61,7 +61,8 @@ def notify_subscriptions() -> None:
                 db_messages.append(db_msg)
 
             messages = Message.objects.bulk_create(db_messages)
-            schedule.last_notification = timezone.now()
+            if messages:
+                schedule.last_notification = timezone.now()
 
             notified_count += len(messages)
 
