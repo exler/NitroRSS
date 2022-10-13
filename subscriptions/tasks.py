@@ -66,7 +66,7 @@ def notify_subscriptions() -> None:
 
             notified_count += len(messages)
 
-        schedule.last_check = timezone.now()
-        schedule.save(update_fields=["last_check", "last_notification"])
+            schedule.last_check = timezone.now()
+            schedule.save(update_fields=["last_check", "last_notification"])
 
     return f"Notified {notified_count} subscriptions"
