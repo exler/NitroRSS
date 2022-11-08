@@ -1,9 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Delete subscription{% endblock %}
+{% block title %}
+    Delete subscription
+{% endblock title %}
 {% block content %}
     <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
-        <form method="POST" class="card-body">
+        <form method="post" class="card-body">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <h2 class="card-title">Confirm deletion</h2>
@@ -15,4 +17,4 @@
             </div>
         </form>
     </div>
-{% endblock %}
+{% endblock content %}

@@ -1,9 +1,15 @@
-{% extends 'email/base.html' %}
+<!-- djlint:off H021 -->
+
+{% extends "email/base.html" %}
 
 {% load nitro_tags %}
 
-{% block title %}New entries in your subscriptions{% endblock %}
-{% block header %}Your digest{% endblock %}
+{% block title %}
+    New entries in your subscriptions
+{% endblock title %}
+{% block header %}
+    Your digest
+{% endblock header %}
 {% block content %}
     <tr>
         <td style="padding: 30px 0 0;" class="sm-pt">
@@ -18,9 +24,14 @@
              font-family: arial, sans-serif;
              font-size: 15px;
              line-height: 15px;
-             color: #3C3F44;"></td>-->
+             color: #3C3F44"></td>-->
                     <td style="vertical-align: middle; padding-bottom: 20px;">
-                        <h2 style="margin: 0; font-family: 'Roboto Slab', arial, sans; font-size: 19px; line-height: 19px; font-weight: bold; color: #3C3F44;">
+                        <h2 style="margin: 0;
+                                   font-family: 'Roboto Slab', arial, sans;
+                                   font-size: 19px;
+                                   line-height: 19px;
+                                   font-weight: bold;
+                                   color: #3C3F44">
                             {{ feed_title }}
                         </h2>
                     </td>
@@ -31,14 +42,15 @@
                     <a href="{{ entry.link }}"
                        style="font-weight: bold;
                               color: #0077cc;
-                              text-decoration: none;">{{ entry.title }}</a>
+                              text-decoration: none">{{ entry.title }}</a>
                     <span style="color: #6A737C;
-                                 font-size: 12px;"
+                                 font-size: 12px"
                           class="unstyle-auto-detected-links">{{ entry.link|baseurl }}</span>
-                    <br>
+                    <br />
                     {{ entry.description }}
                 </p>
             {% endfor %}
         </td>
     </tr>
-{% endblock %}
+{% endblock content %}
+<!-- djlint:on -->

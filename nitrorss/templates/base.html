@@ -3,26 +3,32 @@
 <!DOCTYPE html>
 <html data-theme="nitro" lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
-            {% block title %}{% endblock %}
+            {% block title %}
+            {% endblock title %}
         </title>
-        <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
+        <meta name="description"
+              content="NitroRSS delivers news and updates from your favorite websites to your inbox, in real-time or in various digest sizes."/>
+        <meta name="keywords"
+              content="nitrorss, rss, atom, email, newsletter, rss to email, atom to email"/>
+        <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png" />
         <link href="https://fonts.bunny.net/css?family=Roboto:400,900"
               rel="stylesheet"/>
         {% compress css %}
             <link rel="stylesheet" href="{% static 'css/base.css' %}" />
         {% endcompress %}
-        {% block extra_styles %}{% endblock %}
+        {% block extra_styles %}
+        {% endblock extra_styles %}
         <script src="{% static 'js/htmx-1.7.0.min.js' %}" defer></script>
         <script src="{% static 'js/alpinejs-3.10.2.min.js' %}" defer></script>
     </head>
     <body>
         <div class="max-w-7xl mx-auto">
 
-            {% include 'partials/header.html' %}
+            {% include "partials/header.html" %}
 
             {% if messages %}
                 <div class="messages">
@@ -34,12 +40,14 @@
                 </div>
             {% endif %}
             <main class="container my-4 mx-auto">
-                {% block content %}{% endblock %}
+                {% block content %}
+                {% endblock content %}
             </main>
 
-            {% include 'partials/footer.html' %}
+            {% include "partials/footer.html" %}
 
         </div>
-        {% block extra_scripts %}{% endblock %}
+        {% block extra_scripts %}
+        {% endblock extra_scripts %}
     </body>
 </html>

@@ -1,6 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Subscriptions{% endblock %}
+{% block title %}
+    Subscriptions
+{% endblock title %}
 {% block content %}
     <div class="overflow-x-auto">
         <div class="w-full py-2">
@@ -37,8 +39,7 @@
                                      stroke="currentColor"
                                      viewBox="0 0 24 24"
                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                             </a>
                             <a class="ml-2"
@@ -48,8 +49,7 @@
                                      stroke="currentColor"
                                      viewBox="0 0 24 24"
                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </a>
                         </td>
@@ -66,7 +66,7 @@
         <div class="btn-group w-full mx-auto">
             {% if page_obj.has_previous %}
                 <a href="{% url 'subscriptions:list-subscriptions' %}?page={{ page_obj.previous_page_number }}"
-                   class="btn">&laquo;</a>
+                   class="btn">«</a>
             {% endif %}
             {% for object in page_obj.paginator.page_range %}
                 <a href="{% url 'subscriptions:list-subscriptions' %}?page={{ forloop.counter }}"
@@ -74,8 +74,8 @@
             {% endfor %}
             {% if page_obj.has_next %}
                 <a href="{% url 'subscriptions:list-subscriptions' %}?page={{ page_obj.next_page_number }}"
-                   class="btn">&raquo;</a>
+                   class="btn">»</a>
             {% endif %}
         </div>
     {% endif %}
-{% endblock %}
+{% endblock content %}

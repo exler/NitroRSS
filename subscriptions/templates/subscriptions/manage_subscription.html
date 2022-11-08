@@ -1,12 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load static nitro_tags %}
 
-{% block title %}Manage Subscription{% endblock %}
+{% block title %}
+    Manage Subscription
+{% endblock title %}
 {% block content %}
     <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
         <form action="{% url 'subscriptions:manage-subscription' object.pk %}"
-              method="POST"
+              method="post"
               class="card-body">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -64,4 +66,4 @@
             </div>
         </form>
     </div>
-{% endblock %}
+{% endblock content %}

@@ -1,12 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load static nitro_tags %}
 
-{% block title %}Account{% endblock %}
+{% block title %}
+    Account
+{% endblock account %}
 {% block content %}
     <div>
         <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
-            <form action="{% url 'users:account' %}" method="POST" class="card-body">
+            <form action="{% url 'users:account' %}" method="post" class="card-body">
                 <h2 class="card-title">Personal information</h2>
                 {% csrf_token %}
                 {{ information_form.non_field_errors }}
@@ -29,23 +31,25 @@
                 </div>
             </form>
         </div>
-        {% comment %} <div class="divider"></div>
-    <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
-        <form action="{% url 'users:account' %}" method="POST" class="card-body">
-            <h2 class="card-title">Email preferences</h2>
-            {% csrf_token %}
-            {{ preferences_form.non_field_errors}}
-        <div class="form-control mt-6">
-            <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-        </form>
     </div>
-    <div class="divider"></div> 
-    <div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
-        <div class="card-body">
-            <p class="card-subtitle text-base-content text-center text-sm">If you no longer wish to use our service, click the button below to delete your account.</p>
-            <button type="submit" class="btn btn-error">Delete account</button>
-        </form>
+{% endblock content %}
+{% comment %} 
+<div class="divider"></div>
+<div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
+    <form action="{% url 'users:account' %}" method="post" class="card-body">
+        <h2 class="card-title">Email preferences</h2>
+        {% csrf_token %}
+        {{ preferences_form.non_field_errors}}
+    <div class="form-control mt-6">
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
-        </div> {% endcomment %}
-    {% endblock %}
+    </form>
+</div>
+<div class="divider"></div> 
+<div class="card flex-shrink-0 w-full mx-auto max-w-sm bg-base-200">
+    <div class="card-body">
+        <p class="card-subtitle text-base-content text-center text-sm">If you no longer wish to use our service, click the button below to delete your account.</p>
+        <button type="submit" class="btn btn-error">Delete account</button>
+    </form>
+</div>
+{% endcomment %}
