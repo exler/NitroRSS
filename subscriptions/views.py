@@ -27,7 +27,7 @@ class SubscriptionsView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Subscription]:
-        return Subscription.objects.filter(created_by=self.request.user)
+        return Subscription.objects.filter(created_by=self.request.user).order_by("-id")
 
 
 class AddSubscriptionView(AddSubscriptionMixin, LoginRequiredMixin, CreateView):
@@ -49,6 +49,9 @@ class DeleteSubscriptionView(LoginRequiredMixin, DeleteView):
     model = Subscription
     template_name = "subscriptions/confirm_delete.html"
     success_url = reverse_lazy("subscriptions:list-subscriptions")
+
+    def get_queryset(self) -> QuerySet[Subscription]:
+        return Subscription.objects.filter(created_by=self.request.user)
 
 
 class ConfirmSubscriptionView(RedirectView):

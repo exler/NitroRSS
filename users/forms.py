@@ -3,7 +3,7 @@ from typing import Any, Optional
 from django import forms
 from django.contrib.auth import authenticate, password_validation
 from django.core.exceptions import ValidationError
-from django.http import HttpRequest
+from django.http import Http404, HttpRequest
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -82,6 +82,13 @@ class RegisterForm(HideColonFormMixin, forms.ModelForm):
                 code="password_mismatch",
             )
 
+    def save(self, commit: bool = True) -> User:
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user
+
 
 class ResetPasswordForm(HideColonFormMixin, forms.Form):
     email = forms.EmailField(
@@ -107,9 +114,9 @@ class ResetPasswordForm(HideColonFormMixin, forms.Form):
         Given an email, return matching user who should receive a reset.
         """
         try:
-            user = User.objects.get(email__iexact=email, is_active=True)
+            user = User.objects.get(email__iexact=email, is_active=True, email_verified=True)
         except User.DoesNotExist:
-            return None
+            raise Http404
 
         return user
 

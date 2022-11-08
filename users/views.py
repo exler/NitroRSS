@@ -5,6 +5,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseBase, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -64,7 +65,11 @@ class ResetPasswordView(FormView):
     success_url = reverse_lazy("users:reset-password-requested")
 
     def form_valid(self, form: ResetPasswordForm) -> HttpResponse:
-        form.save()
+        try:
+            form.save()
+        except Http404:
+            messages.add_message(self.request, messages.ERROR, "No user with this email address exists.")
+            return self.form_invalid(form)
         return super().form_valid(form)
 
 
