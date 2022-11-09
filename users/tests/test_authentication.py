@@ -15,9 +15,6 @@ class TestUserAuthentication(TestCase):
     REGISTER_URL = reverse("users:register")
     RESET_PASSWORD_URL = reverse("users:reset-password")
 
-    def setUp(self) -> None:
-        pass
-
     def test_user_can_register(self) -> None:
         response = self.client.post(
             self.REGISTER_URL,

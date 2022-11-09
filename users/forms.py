@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from mailer.models import Message
-from nitrorss.base.mixins import HideColonFormMixin
+from nitrorss.common.mixins import HideColonFormMixin
 from nitrorss.utils.url import get_full_url
 from users.tokens import PasswordResetTokenGenerator
 

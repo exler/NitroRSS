@@ -19,15 +19,16 @@ def notify_subscriptions() -> None:
     )
     for schedule in schedules:
         if schedule.should_check:
-            entries = (
-                FeedEntry.objects.filter(
+            if schedule.last_notification:
+                entries = FeedEntry.objects.filter(
                     feed__subscriptions__schedule_id=schedule.id, date_published__gt=schedule.last_notification
                 )
-                if schedule.last_notification
-                else FeedEntry.objects.filter(
+            else:
+                entries = FeedEntry.objects.filter(
                     feed__subscriptions__schedule_id=schedule.id,
                 )
-            )
+            entries = entries.distinct()
+
             values = entries.values("feed__subscriptions", "feed__subscriptions__target_email", "id")
             distinct_subscriptions = values.distinct("feed__subscriptions").values(
                 "feed__title",

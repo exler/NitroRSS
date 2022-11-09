@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from feeds.models import Feed
-from nitrorss.base.mixins import HideColonFormMixin
+from nitrorss.common.mixins import HideColonFormMixin
 
 from .models import Subscription
 
