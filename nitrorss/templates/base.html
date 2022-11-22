@@ -17,6 +17,11 @@
         <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png" />
         <link href="https://fonts.bunny.net/css?family=Roboto:400,900"
               rel="stylesheet"/>
+        <meta property="og:title" content="NitroRSS" />
+        <meta property="og:description" content="NitroRSS delivers news and updates from your favorite websites to your inbox, in real-time or in various digest sizes." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="{{ base_url }}" />
+        <meta property="og:image" content="{% static 'img/thumbnail.png' %}" />
         {% compress css %}
             <link rel="stylesheet" href="{% static 'css/base.css' %}" />
         {% endcompress %}

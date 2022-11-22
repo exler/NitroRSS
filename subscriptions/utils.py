@@ -1,7 +1,7 @@
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 from mailer.models import Message
-from nitrorss.utils.emails import render_email_template_to_string
 from nitrorss.utils.url import get_full_url
 
 from .models import Subscription
@@ -16,8 +16,8 @@ def send_subscription_confirmation_email(subscription: Subscription) -> None:
             reverse("subscriptions:confirm-subscription", kwargs={"token": confirmation_token})
         )
     }
-    text_message = render_email_template_to_string("subscription/email/verification.txt", context)
-    html_message = render_email_template_to_string("subscription/email/verification.html", context)
+    text_message = render_to_string("subscription/email/verification.txt", context)
+    html_message = render_to_string("subscription/email/verification.html", context)
     db_msg = Message.make(
         subject="Verify your subscription",
         text_content=text_message,

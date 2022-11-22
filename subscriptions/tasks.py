@@ -1,10 +1,10 @@
 from django.db.models import Q
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 
 from feeds.models import FeedEntry
 from mailer.models import Message
-from nitrorss.utils.emails import render_email_template_to_string
 from nitrorss.utils.url import get_full_url
 
 from .models import Schedule
@@ -51,8 +51,8 @@ def notify_subscriptions() -> None:
                         )
                     ),
                 }
-                text_message = render_email_template_to_string("subscriptions/email/digest.txt", context)
-                html_message = render_email_template_to_string("subscriptions/email/digest.html", context)
+                text_message = render_to_string("subscriptions/email/digest.txt", context)
+                html_message = render_to_string("subscriptions/email/digest.html", context)
                 db_msg = Message.make(
                     subject="Your subscription has new entries!",
                     text_content=text_message,

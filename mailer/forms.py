@@ -1,9 +1,10 @@
 from typing import Any
 
 from django import forms
+from django.template.loader import render_to_string
 
 from mailer.models import Message
-from nitrorss.utils.emails import get_email_templates, render_email_template_to_string
+from nitrorss.utils.emails import get_email_templates
 
 
 class SendTestEmailForm(forms.Form):
@@ -21,8 +22,8 @@ class SendTestEmailForm(forms.Form):
         subject = self.cleaned_data["subject"]
         template_name = self.cleaned_data["template"]
         context = self.cleaned_data["context"]
-        html_content = template_name.endswith(".html") and render_email_template_to_string(template_name, context) or ""
-        text_content = template_name.endswith(".txt") and render_email_template_to_string(template_name, context) or ""
+        html_content = template_name.endswith(".html") and render_to_string(template_name, context) or ""
+        text_content = template_name.endswith(".txt") and render_to_string(template_name, context) or ""
         kwargs = {
             "subject": subject,
             "recipients": [recipient],
