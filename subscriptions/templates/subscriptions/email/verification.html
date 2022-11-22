@@ -1,0 +1,25 @@
+<!-- djlint:off H021 -->
+
+{% extends "email/base.html" %}
+
+{% load nitro_tags %}
+
+{% block title %}
+    Verify your subscription
+{% endblock title %}
+{% block content %}
+    <tr>
+        <td style="padding: 30px 0;" class="sm-pt">
+            <p>
+                To verify your subscription, please click the link:
+                <a href="{{ verification_url }}"
+                   style="font-weight: bold;
+                          color: #0077cc;
+                          text-decoration: none">
+                    Verify your subscription
+                </a>
+            </p>
+        </td>
+    </tr>
+{% endblock content %}
+<!-- djlint:on -->

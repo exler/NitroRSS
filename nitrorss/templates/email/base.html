@@ -8,128 +8,128 @@
       o="urn:schemas-microsoft-com:office:office"
       xmlns
       v="urn:schemas-microsoft-com:vml">
-        <head>
-            <!-- The title tag shows in email notifications -->
-            <title>{% block title %}{% endblock title %}</title>
-            <!-- UTF-8 works for most cases -->
-            <meta charset="utf-8" />
-            <!-- Forcing initial-scale shouldn't be necessary -->
-            <meta name="viewport" content="width=device-width" />
-            <!-- Use the latest (edge) version of IE rendering engine -->
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <!-- Disable auto-scale in iOS 10 Mail entirely -->
-            <meta name="x-apple-disable-message-reformatting" />
-            <!-- Tell iOS not to automatically link certain text strings. -->
-            <meta name="format-detection"
-                  content="telephone=no,address=no,email=no,date=no,url=no"/>
-            <!-- Desktop Outlook on Windows sometimes chokes on web font references and defaults to Times New Roman, so we force a safe system font fallback. -->
-            <!--[if mso]>
+            <head>
+                <!-- The title tag shows in email notifications -->
+                <title>{% block title %}{% endblock title %}</title>
+                <!-- UTF-8 works for most cases -->
+                <meta charset="utf-8" />
+                <!-- Forcing initial-scale shouldn't be necessary -->
+                <meta name="viewport" content="width=device-width" />
+                <!-- Use the latest (edge) version of IE rendering engine -->
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <!-- Disable auto-scale in iOS 10 Mail entirely -->
+                <meta name="x-apple-disable-message-reformatting" />
+                <!-- Tell iOS not to automatically link certain text strings. -->
+                <meta name="format-detection"
+                      content="telephone=no,address=no,email=no,date=no,url=no"/>
+                <!-- Desktop Outlook on Windows sometimes chokes on web font references and defaults to Times New Roman, so we force a safe system font fallback. -->
+                <!--[if mso]>
         <style>
             * {
               font-family: arial, sans-serif !important
             }
         </style>
         <![endif]-->
-            <!-- All other clients get the webfont reference; some will render the font and others will silently fail to the fallbacks. More on that here: http://stylecampaign.com/blog/2015/02/webfont-support-in-email/ -->
-            <!--[if !mso]><!-->
-            <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700"
-                  rel="stylesheet"/>
-            <!--<![endif]-->
-            <!-- CSS Reset : BEGIN -->
-            <style>
-                html,
-                body {
-                  margin: 0 !important;
-                  padding: 0 !important;
-                  height: 100% !important;
-                  width: 100% !important
-                }
+                <!-- All other clients get the webfont reference; some will render the font and others will silently fail to the fallbacks. More on that here: http://stylecampaign.com/blog/2015/02/webfont-support-in-email/ -->
+                <!--[if !mso]><!-->
+                <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700"
+                      rel="stylesheet"/>
+                <!--<![endif]-->
+                <!-- CSS Reset : BEGIN -->
+                <style>
+                    html,
+                    body {
+                      margin: 0 !important;
+                      padding: 0 !important;
+                      height: 100% !important;
+                      width: 100% !important
+                    }
 
-                * {
-                  -ms-text-size-adjust: 100%;
-                  -webkit-text-size-adjust: 100%
-                }
+                    * {
+                      -ms-text-size-adjust: 100%;
+                      -webkit-text-size-adjust: 100%
+                    }
 
-                div[style*="margin: 16px 0"] {
-                  margin: 0 !important
-                }
+                    div[style*="margin: 16px 0"] {
+                      margin: 0 !important
+                    }
 
-                table,
-                td {
-                  mso-table-lspace: 0 !important;
-                  mso-table-rspace: 0 !important
-                }
+                    table,
+                    td {
+                      mso-table-lspace: 0 !important;
+                      mso-table-rspace: 0 !important
+                    }
 
-                table {
-                  border: 0;
-                  border-spacing: 0;
-                  border-collapse: collapse
-                }
+                    table {
+                      border: 0;
+                      border-spacing: 0;
+                      border-collapse: collapse
+                    }
 
-                img {
-                  -ms-interpolation-mode: bicubic
-                }
+                    img {
+                      -ms-interpolation-mode: bicubic
+                    }
 
-                a {
-                  text-decoration: none
-                }
+                    a {
+                      text-decoration: none
+                    }
 
-                a[x-apple-data-detectors],
-                .unstyle-auto-detected-links a,
-                .aBn {
-                  border-bottom: 0 !important;
-                  cursor: default !important;
-                  color: inherit !important;
-                  text-decoration: none !important;
-                  font-size: inherit !important;
-                  font-family: inherit !important;
-                  font-weight: inherit !important;
-                  line-height: inherit !important
-                }
+                    a[x-apple-data-detectors],
+                    .unstyle-auto-detected-links a,
+                    .aBn {
+                      border-bottom: 0 !important;
+                      cursor: default !important;
+                      color: inherit !important;
+                      text-decoration: none !important;
+                      font-size: inherit !important;
+                      font-family: inherit !important;
+                      font-weight: inherit !important;
+                      line-height: inherit !important
+                    }
 
-                u+#body a,
-                #MessageViewBody a {
-                  color: inherit;
-                  text-decoration: none;
-                  font-size: inherit;
-                  font-family: inherit;
-                  font-weight: inherit;
-                  line-height: inherit
-                }
+                    u+#body a,
+                    #MessageViewBody a {
+                      color: inherit;
+                      text-decoration: none;
+                      font-size: inherit;
+                      font-family: inherit;
+                      font-weight: inherit;
+                      line-height: inherit
+                    }
 
-                .im {
-                  color: inherit !important
-                }
+                    .im {
+                      color: inherit !important
+                    }
 
-                .a6S {
-                  display: none !important;
-                  opacity: .01 !important
-                }
+                    .a6S {
+                      display: none !important;
+                      opacity: .01 !important
+                    }
 
-                img.g-img+div {
-                  display: none !important
-                }
+                    img.g-img+div {
+                      display: none !important
+                    }
 
-                @media only screen and (min-device-width:320px) and (max-device-width:374px) {
-                  u~div .email-container {
-                    min-width: 320px !important
-                  }
-                }
+                    @media only screen and (min-device-width:320px) and (max-device-width:374px) {
+                      u~div .email-container {
+                        min-width: 320px !important
+                      }
+                    }
 
-                @media only screen and (min-device-width:375px) and (max-device-width:413px) {
-                  u~div .email-container {
-                    min-width: 375px !important
-                  }
-                }
+                    @media only screen and (min-device-width:375px) and (max-device-width:413px) {
+                      u~div .email-container {
+                        min-width: 375px !important
+                      }
+                    }
 
-                @media only screen and (min-device-width:414px) {
-                  u~div .email-container {
-                    min-width: 414px !important
-                  }
-                }
-            </style>
-            <!-- What it does: Helps DPI scaling in Outlook 2007-2013 -->
-            <!--[if gte mso 9]>
+                    @media only screen and (min-device-width:414px) {
+                      u~div .email-container {
+                        min-width: 414px !important
+                      }
+                    }
+                </style>
+                <!-- What it does: Helps DPI scaling in Outlook 2007-2013 -->
+                <!--[if gte mso 9]>
         <xml>
         <o:OfficeDocumentSettings>
             <o:AllowPNG/>
@@ -137,140 +137,140 @@
         </o:OfficeDocumentSettings>
         </xml>
         <![endif]-->
-            <!-- CSS Reset : END -->
-            <!-- Progressive Enhancements : BEGIN -->
-            <style>
-                code {
-                  padding: 1px 5px;
-                  background-color: #eff0f1;
-                  color: #242729;
-                  font-size: 13px;
-                  line-height: inherit;
-                  font-family: 'Roboto Slab', arial, sans
-                }
+                <!-- CSS Reset : END -->
+                <!-- Progressive Enhancements : BEGIN -->
+                <style>
+                    code {
+                      padding: 1px 5px;
+                      background-color: #eff0f1;
+                      color: #242729;
+                      font-size: 13px;
+                      line-height: inherit;
+                      font-family: 'Roboto Slab', arial, sans
+                    }
 
-                pre {
-                  margin: 0 0 15px;
-                  line-height: 17px;
-                  background-color: #eff0f1;
-                  padding: 4px 8px;
-                  border-radius: 3px;
-                  overflow-x: auto
-                }
+                    pre {
+                      margin: 0 0 15px;
+                      line-height: 17px;
+                      background-color: #eff0f1;
+                      padding: 4px 8px;
+                      border-radius: 3px;
+                      overflow-x: auto
+                    }
 
-                pre code {
-                  margin: 0 0 15px;
-                  padding: 0;
-                  line-height: 17px;
-                  background-color: none
-                }
+                    pre code {
+                      margin: 0 0 15px;
+                      padding: 0;
+                      line-height: 17px;
+                      background-color: none
+                    }
 
-                blockquote {
-                  margin: 0 0 15px;
-                  padding: 4px 10px;
-                  background-color: #fff8dc;
-                  border-left: 2px solid #ffeb8e
-                }
+                    blockquote {
+                      margin: 0 0 15px;
+                      padding: 4px 10px;
+                      background-color: #fff8dc;
+                      border-left: 2px solid #ffeb8e
+                    }
 
-                blockquote p {
-                  padding: 4px 0;
-                  margin: 0;
-                  overflow-wrap: break-word
-                }
+                    blockquote p {
+                      padding: 4px 0;
+                      margin: 0;
+                      overflow-wrap: break-word
+                    }
 
-                .bar {
-                  border-radius: 5px
-                }
+                    .bar {
+                      border-radius: 5px
+                    }
 
-                .adjust-logo {
-                  padding-left: 15px
-                }
+                    .adjust-logo {
+                      padding-left: 15px
+                    }
 
-                @media screen and (max-width:680px) {
-                  .hide-on-mobile {
-                    display: none !important;
-                    max-height: 0 !important;
-                    overflow: hidden !important;
-                    visibility: hidden !important
-                  }
+                    @media screen and (max-width:680px) {
+                      .hide-on-mobile {
+                        display: none !important;
+                        max-height: 0 !important;
+                        overflow: hidden !important;
+                        visibility: hidden !important
+                      }
 
-                  .sm-p-none {
-                    padding: 0 !important
-                  }
+                      .sm-p-none {
+                        padding: 0 !important
+                      }
 
-                  .sm-pt-none {
-                    padding-top: 0 !important
-                  }
+                      .sm-pt-none {
+                        padding-top: 0 !important
+                      }
 
-                  .sm-pb-none {
-                    padding-bottom: 0 !important
-                  }
+                      .sm-pb-none {
+                        padding-bottom: 0 !important
+                      }
 
-                  .sm-pr-none {
-                    padding-right: 0 !important
-                  }
+                      .sm-pr-none {
+                        padding-right: 0 !important
+                      }
 
-                  .sm-pl-none {
-                    padding-left: 0 !important
-                  }
+                      .sm-pl-none {
+                        padding-left: 0 !important
+                      }
 
-                  .sm-px-none {
-                    padding-left: 0 !important;
-                    padding-right: 0 !important
-                  }
+                      .sm-px-none {
+                        padding-left: 0 !important;
+                        padding-right: 0 !important
+                      }
 
-                  .sm-py-none {
-                    padding-top: 0 !important;
-                    padding-bottom: 0 !important
-                  }
+                      .sm-py-none {
+                        padding-top: 0 !important;
+                        padding-bottom: 0 !important
+                      }
 
-                  .sm-p {
-                    padding: 20px !important
-                  }
+                      .sm-p {
+                        padding: 20px !important
+                      }
 
-                  .sm-pt {
-                    padding-top: 20px !important
-                  }
+                      .sm-pt {
+                        padding-top: 20px !important
+                      }
 
-                  .sm-pb {
-                    padding-bottom: 20px !important
-                  }
+                      .sm-pb {
+                        padding-bottom: 20px !important
+                      }
 
-                  .sm-pr {
-                    padding-right: 20px !important
-                  }
+                      .sm-pr {
+                        padding-right: 20px !important
+                      }
 
-                  .sm-pl {
-                    padding-left: 20px !important
-                  }
+                      .sm-pl {
+                        padding-left: 20px !important
+                      }
 
-                  .sm-px {
-                    padding-left: 20px !important;
-                    padding-right: 20px !important
-                  }
+                      .sm-px {
+                        padding-left: 20px !important;
+                        padding-right: 20px !important
+                      }
 
-                  .sm-py {
-                    padding-top: 20px !important;
-                    padding-bottom: 20px !important
-                  }
+                      .sm-py {
+                        padding-top: 20px !important;
+                        padding-bottom: 20px !important
+                      }
 
-                  .sm-mb {
-                    margin-bottom: 20px !important
-                  }
+                      .sm-mb {
+                        margin-bottom: 20px !important
+                      }
 
-                  .bar {
-                    border-top-left-radius: 0;
-                    border-top-right-radius: 0;
-                    border-bottom-left-radius: 0;
-                    border-bottom-right-radius: 0
-                  }
+                      .bar {
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 0;
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0
+                      }
 
-                  .adjust-logo {
-                    padding-left: 0
-                  }
-                }
-            </style>
-            <!-- Progressive Enhancements : END -->
+                      .adjust-logo {
+                        padding-left: 0
+                      }
+                    }
+                </style>
+                <!-- Progressive Enhancements : END -->
     </head>
     <!-- The email background color is defined in three places, just below. If you change one, remember to change the others. 1. body tag: for most email clients 2. center tag: for Gmail and Inbox mobile apps and web versions of Gmail, GSuite, Inbox, Yahoo, AOL, Libero, Comcast, freenet, Mail.ru, Orange.fr 3. mso conditional: For Windows 10 Mail -->
     <body width="100%"
@@ -345,6 +345,7 @@
                                role="presentation"
                                width="100%">
                             <!-- Subscription Info : BEGIN -->
+                            {% if unsubscribe_url %}
                             <tr>
                                 <td style="padding-bottom: 10px;
                                            font-size: 12px;
@@ -355,6 +356,7 @@
                                     You're receiving this email because you are subscribed to a newsletter using NitroRSS.
                                 </td>
                             </tr>
+                            {% endif %}
                             <tr>
                                 <td style="font-size: 12px;
                                            line-height: 15px;

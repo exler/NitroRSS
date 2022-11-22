@@ -1,0 +1,3 @@
+To verify your subscription, please click the link below:
+
+{{ verification_url }}
