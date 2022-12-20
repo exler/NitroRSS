@@ -16,8 +16,8 @@ def send_subscription_confirmation_email(subscription: Subscription) -> None:
             reverse("subscriptions:confirm-subscription", kwargs={"token": confirmation_token})
         )
     }
-    text_message = render_to_string("subscription/email/verification.txt", context)
-    html_message = render_to_string("subscription/email/verification.html", context)
+    text_message = render_to_string("subscriptions/email/verification.txt", context)
+    html_message = render_to_string("subscriptions/email/verification.html", context)
     db_msg = Message.make(
         subject="Verify your subscription",
         text_content=text_message,
