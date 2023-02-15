@@ -6,7 +6,6 @@ import nitrorss.common.validators
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("subscriptions", "0003_remove_subscription_is_deleted_and_more"),
     ]

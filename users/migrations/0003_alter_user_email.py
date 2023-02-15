@@ -6,7 +6,6 @@ import nitrorss.common.validators
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("users", "0002_user_email_verified"),
     ]

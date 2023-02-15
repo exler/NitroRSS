@@ -6,7 +6,6 @@ import subscriptions.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("subscriptions", "0002_subscription_confirmed"),
     ]
