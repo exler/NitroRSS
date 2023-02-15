@@ -17,6 +17,17 @@ def get_env_int(key: str, default: Optional[int] = None) -> Optional[int]:
         return None
 
 
+def get_env_float(key: str, default: Optional[float] = None) -> Optional[float]:
+    value = os.environ.get(key, default)
+    if value is None:
+        return None
+
+    try:
+        return float(value)
+    except TypeError:
+        return None
+
+
 def get_env_list(key: str, default: list[str] = []) -> list[str]:
     value = os.environ.get(key, None)
     if value is None:

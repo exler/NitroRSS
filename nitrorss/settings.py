@@ -1,10 +1,18 @@
 from pathlib import Path
 
 import dj_database_url
+import sentry_sdk
 from django.contrib.messages import constants as message_constants
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
-from nitrorss.utils.env import get_env_bool, get_env_int, get_env_list, get_env_str
+from nitrorss.utils.env import (
+    get_env_bool,
+    get_env_float,
+    get_env_int,
+    get_env_list,
+    get_env_str,
+)
 
 load_dotenv()
 
@@ -52,43 +60,40 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+if not DEBUG:
+    sentry_dsn = get_env_str("SENTRY_DSN")
+    sentry_env = get_env_str("SENTRY_ENV")
+    if sentry_dsn and sentry_env:
+        sentry_sdk.init(
+            dsn=sentry_dsn,
+            environment=sentry_env,
+            integrations=[DjangoIntegration()],
+            send_default_pii=True,
+            attach_stacktrace=True,
+            traces_sample_rate=get_env_float("SENTRY_TRACES_SAMPLE_RATE", "0.0"),
+        )
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-        },
-        "rollbar": {
-            # This will be replaced by a real handler if Rollbar is enabled
-            "class": "logging.NullHandler",
-        },
+        }
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "rollbar"],
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": True,
         },
         "django.request": {
-            "handlers": ["console", "rollbar"],
+            "handlers": ["console"],
             "level": "ERROR",
             "propagate": False,
         },
     },
 }
-
-if ROLLBAR_ACCESS_TOKEN := get_env_str("ROLLBAR_ACCESS_TOKEN"):
-    LOGGING["handlers"]["rollbar"].update(
-        {
-            "access_token": ROLLBAR_ACCESS_TOKEN,
-            "environment": "production" if not DEBUG else "development",
-            "class": "rollbar.logger.RollbarHandler",
-        }
-    )
-    MIDDLEWARE.append(
-        "rollbar.contrib.django.middleware.RollbarNotifierMiddlewareExcluding404",
-    )
 
 
 ROOT_URLCONF = "nitrorss.urls"
