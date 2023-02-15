@@ -5,6 +5,8 @@ services:
     image: postgres:14-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -19,6 +21,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    environment:
+      - DJANGO_ALLOWED_HOSTS=localhost
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
 
   qcluster:
     build: .
@@ -27,6 +32,9 @@ services:
       - .:/app
     depends_on:
       - db
+    environment:
+      - DJANGO_ALLOWED_HOSTS=localhost
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
 
 volumes:
   postgres_data:
